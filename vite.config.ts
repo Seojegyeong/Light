@@ -4,5 +4,5 @@ import { crx } from '@crxjs/vite-plugin'
 import manifest from './manifest.json'
 
 export default defineConfig({
-  plugins: [react(), crx({ manifest })],
+  plugins: [react({ jsxImportSource: '@emotion/react' }), crx({ manifest })],
 })
