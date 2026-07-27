@@ -1,0 +1,380 @@
+[
+  {
+    "id": "stock-001",
+    "name": "PER",
+    "category": "주식",
+    "description": "주가를 주당순이익(EPS)으로 나눈 지표. 주식의 가격 수준을 가늠하는 대표적 밸류에이션 배수.",
+    "aliases": ["주가수익비율", "p/e", "pe"]
+  },
+  {
+    "id": "stock-002",
+    "name": "PBR",
+    "category": "주식",
+    "description": "주가를 주당순자산(BPS)으로 나눈 지표. 1 미만이면 청산가치 이하로 평가된 것.",
+    "aliases": ["주가순자산비율", "p/b"]
+  },
+  {
+    "id": "stock-003",
+    "name": "EPS",
+    "category": "주식",
+    "description": "당기순이익을 발행주식 수로 나눈 주당순이익.",
+    "aliases": ["주당순이익"]
+  },
+  {
+    "id": "stock-004",
+    "name": "ROE",
+    "category": "주식",
+    "description": "순이익을 자기자본으로 나눈 자기자본이익률. 주주가 투자한 자본 대비 수익성을 나타냄.",
+    "aliases": ["자기자본이익률"]
+  },
+  {
+    "id": "stock-005",
+    "name": "ROA",
+    "category": "주식",
+    "description": "순이익을 총자산으로 나눈 총자산이익률.",
+    "aliases": ["총자산이익률"]
+  },
+  {
+    "id": "stock-006",
+    "name": "BPS",
+    "category": "주식",
+    "description": "총자산에서 총부채를 뺀 순자산을 발행주식 수로 나눈 주당순자산.",
+    "aliases": ["주당순자산"]
+  },
+  {
+    "id": "stock-007",
+    "name": "시가총액",
+    "category": "주식",
+    "description": "주가에 상장 주식 수를 곱한 값. 기업의 시장가치를 나타냄.",
+    "aliases": ["시총", "market cap", "marketcap"]
+  },
+  {
+    "id": "stock-008",
+    "name": "배당수익률",
+    "category": "주식",
+    "description": "주당배당금을 주가로 나눈 비율.",
+    "aliases": ["배당률", "dividend yield"]
+  },
+  {
+    "id": "stock-009",
+    "name": "공매도",
+    "category": "주식",
+    "description": "보유하지 않은 주식을 빌려 매도하는 투자 기법. 주가 하락을 예상할 때 사용.",
+    "aliases": ["short selling", "short"]
+  },
+  {
+    "id": "stock-010",
+    "name": "상한가",
+    "category": "주식",
+    "description": "하루 동안 주가가 오를 수 있는 최대 한도(한국 30%)에 도달한 상태.",
+    "aliases": ["upper limit"]
+  },
+  {
+    "id": "stock-011",
+    "name": "하한가",
+    "category": "주식",
+    "description": "하루 동안 주가가 내릴 수 있는 최대 한도(한국 −30%)에 도달한 상태.",
+    "aliases": ["lower limit"]
+  },
+  {
+    "id": "stock-012",
+    "name": "거래량",
+    "category": "주식",
+    "description": "특정 기간 동안 거래된 주식 수.",
+    "aliases": ["volume", "trading volume"]
+  },
+  {
+    "id": "bond-001",
+    "name": "국채",
+    "category": "채권",
+    "description": "중앙정부가 발행하는 채권. 신용등급이 높아 안전 자산으로 분류.",
+    "aliases": ["government bond", "treasury bond"]
+  },
+  {
+    "id": "bond-002",
+    "name": "회사채",
+    "category": "채권",
+    "description": "기업이 자금 조달을 위해 발행하는 채권.",
+    "aliases": ["corporate bond"]
+  },
+  {
+    "id": "bond-003",
+    "name": "채권수익률",
+    "category": "채권",
+    "description": "채권을 만기까지 보유할 때 얻는 연간 수익률(YTM).",
+    "aliases": ["yield", "ytm", "만기수익률"]
+  },
+  {
+    "id": "bond-004",
+    "name": "듀레이션",
+    "category": "채권",
+    "description": "채권 현금흐름의 가중평균 만기. 금리 변동에 대한 채권 가격 민감도를 나타냄.",
+    "aliases": ["duration"]
+  },
+  {
+    "id": "bond-005",
+    "name": "신용등급",
+    "category": "채권",
+    "description": "채무자의 채무 이행 능력을 평가한 등급.",
+    "aliases": ["credit rating", "rating"]
+  },
+  {
+    "id": "bond-006",
+    "name": "액면가",
+    "category": "채권",
+    "description": "채권 발행 시 표시되는 기준 금액. 만기 시 상환되는 금액.",
+    "aliases": ["face value", "par value", "par"]
+  },
+  {
+    "id": "bond-007",
+    "name": "쿠폰금리",
+    "category": "채권",
+    "description": "채권의 액면가에 대해 지급하는 연간 이자율.",
+    "aliases": ["coupon rate", "coupon"]
+  },
+  {
+    "id": "bond-008",
+    "name": "역전된 수익률 곡선",
+    "category": "채권",
+    "description": "단기 금리가 장기 금리보다 높아지는 현상. 경기 침체의 선행 신호로 여겨짐.",
+    "aliases": ["inverted yield curve", "yield curve inversion"]
+  },
+  {
+    "id": "macro-001",
+    "name": "GDP",
+    "category": "거시경제",
+    "description": "일정 기간 한 나라 안에서 생산된 모든 재화·서비스의 시장 가치 합계.",
+    "aliases": ["국내총생산", "gross domestic product"]
+  },
+  {
+    "id": "macro-002",
+    "name": "기준금리",
+    "category": "거시경제",
+    "description": "중앙은행이 설정하는 정책 금리. 시중 금리의 기준이 됨.",
+    "aliases": ["base rate", "key rate", "정책금리"]
+  },
+  {
+    "id": "macro-003",
+    "name": "인플레이션",
+    "category": "거시경제",
+    "description": "물가 수준이 지속적으로 상승하는 현상.",
+    "aliases": ["inflation", "물가상승"]
+  },
+  {
+    "id": "macro-004",
+    "name": "디플레이션",
+    "category": "거시경제",
+    "description": "물가 수준이 지속적으로 하락하는 현상.",
+    "aliases": ["deflation", "물가하락"]
+  },
+  {
+    "id": "macro-005",
+    "name": "CPI",
+    "category": "거시경제",
+    "description": "소비자가 구매하는 재화·서비스의 가격 변동을 측정하는 소비자물가지수.",
+    "aliases": ["소비자물가지수", "consumer price index"]
+  },
+  {
+    "id": "macro-006",
+    "name": "PPI",
+    "category": "거시경제",
+    "description": "생산자가 판매하는 재화·서비스의 가격 변동을 측정하는 생산자물가지수.",
+    "aliases": ["생산자물가지수", "producer price index"]
+  },
+  {
+    "id": "macro-007",
+    "name": "환율",
+    "category": "거시경제",
+    "description": "자국 통화 한 단위와 교환되는 외국 통화의 양.",
+    "aliases": ["exchange rate"]
+  },
+  {
+    "id": "macro-008",
+    "name": "경상수지",
+    "category": "거시경제",
+    "description": "상품·서비스 수출입, 소득, 이전 거래를 포함한 국제 거래 수지.",
+    "aliases": ["current account"]
+  },
+  {
+    "id": "macro-009",
+    "name": "베이시스포인트",
+    "category": "거시경제",
+    "description": "금리나 수익률 변화를 나타내는 단위. 1bp = 0.01%p.",
+    "aliases": ["bp", "bps", "basis point", "basis points"]
+  },
+  {
+    "id": "macro-010",
+    "name": "양적완화",
+    "category": "거시경제",
+    "description": "중앙은행이 채권 등을 매입해 시중에 유동성을 공급하는 비전통적 통화정책.",
+    "aliases": ["QE", "quantitative easing"]
+  },
+  {
+    "id": "deriv-001",
+    "name": "선물",
+    "category": "파생상품",
+    "description": "미래 특정 시점에 사전에 정한 가격으로 자산을 사고팔기로 약정한 계약.",
+    "aliases": ["futures"]
+  },
+  {
+    "id": "deriv-002",
+    "name": "콜옵션",
+    "category": "파생상품",
+    "description": "특정 가격(행사가)에 자산을 매수할 수 있는 권리.",
+    "aliases": ["call option", "call"]
+  },
+  {
+    "id": "deriv-003",
+    "name": "풋옵션",
+    "category": "파생상품",
+    "description": "특정 가격(행사가)에 자산을 매도할 수 있는 권리.",
+    "aliases": ["put option", "put"]
+  },
+  {
+    "id": "deriv-004",
+    "name": "스왑",
+    "category": "파생상품",
+    "description": "두 당사자가 미래 현금 흐름을 교환하기로 하는 계약.",
+    "aliases": ["swap"]
+  },
+  {
+    "id": "deriv-005",
+    "name": "변동성",
+    "category": "파생상품",
+    "description": "자산 가격의 변동 폭을 나타내는 지표. 옵션 가격 산정의 핵심 변수.",
+    "aliases": ["volatility", "vol"]
+  },
+  {
+    "id": "deriv-006",
+    "name": "VIX",
+    "category": "파생상품",
+    "description": "S&P 500 옵션 가격에서 도출된 향후 30일 예상 변동성 지수. '공포지수'라고도 불림.",
+    "aliases": ["공포지수", "fear index"]
+  },
+  {
+    "id": "deriv-007",
+    "name": "레버리지",
+    "category": "파생상품",
+    "description": "차입 자금을 이용해 실제 투자 금액 이상의 포지션을 취하는 것.",
+    "aliases": ["leverage"]
+  },
+  {
+    "id": "deriv-008",
+    "name": "마진콜",
+    "category": "파생상품",
+    "description": "레버리지 포지션에서 손실이 커져 증거금을 추가로 납부해야 하는 상황.",
+    "aliases": ["margin call"]
+  },
+  {
+    "id": "realty-001",
+    "name": "LTV",
+    "category": "부동산",
+    "description": "담보 가치 대비 대출 가능 금액의 비율.",
+    "aliases": ["주택담보대출비율", "loan to value"]
+  },
+  {
+    "id": "realty-002",
+    "name": "DSR",
+    "category": "부동산",
+    "description": "연간 총부채 원리금 상환액을 연소득으로 나눈 비율.",
+    "aliases": ["총부채원리금상환비율", "debt service ratio"]
+  },
+  {
+    "id": "realty-003",
+    "name": "DTI",
+    "category": "부동산",
+    "description": "연간 총부채 이자 상환액을 연소득으로 나눈 비율.",
+    "aliases": ["총부채상환비율"]
+  },
+  {
+    "id": "realty-004",
+    "name": "전세",
+    "category": "부동산",
+    "description": "임차인이 보증금을 맡기고 계약 기간 동안 무상으로 거주하는 한국 고유의 임대 방식.",
+    "aliases": ["jeonse", "전세계약"]
+  },
+  {
+    "id": "realty-005",
+    "name": "청약",
+    "category": "부동산",
+    "description": "신규 분양 아파트 입주권을 신청하는 절차.",
+    "aliases": ["housing subscription"]
+  },
+  {
+    "id": "realty-006",
+    "name": "용적률",
+    "category": "부동산",
+    "description": "대지면적 대비 건물 연면적의 비율. 개발 밀도를 결정하는 핵심 규제.",
+    "aliases": ["floor area ratio", "far"]
+  },
+  {
+    "id": "realty-007",
+    "name": "재건축",
+    "category": "부동산",
+    "description": "노후 아파트·건물을 허물고 새로 짓는 정비 사업.",
+    "aliases": ["reconstruction"]
+  },
+  {
+    "id": "realty-008",
+    "name": "분양가상한제",
+    "category": "부동산",
+    "description": "신규 분양 아파트의 분양 가격에 상한선을 두는 제도.",
+    "aliases": ["price ceiling", "분양가규제"]
+  },
+  {
+    "id": "acct-001",
+    "name": "매출액",
+    "category": "회계",
+    "description": "기업이 주된 영업활동으로 벌어들인 총수입.",
+    "aliases": ["매출", "revenue", "sales"]
+  },
+  {
+    "id": "acct-002",
+    "name": "영업이익",
+    "category": "회계",
+    "description": "매출에서 매출원가와 판관비를 뺀 이익.",
+    "aliases": ["operating income", "operating profit", "EBIT"]
+  },
+  {
+    "id": "acct-003",
+    "name": "순이익",
+    "category": "회계",
+    "description": "모든 비용과 세금을 제한 후 남은 최종 이익.",
+    "aliases": ["당기순이익", "net income", "net profit"]
+  },
+  {
+    "id": "acct-004",
+    "name": "EBITDA",
+    "category": "회계",
+    "description": "이자·세금·감가상각 전 이익. 기업의 순수 영업 현금 창출력을 나타냄.",
+    "aliases": []
+  },
+  {
+    "id": "acct-005",
+    "name": "부채비율",
+    "category": "회계",
+    "description": "총부채를 자기자본으로 나눈 비율. 기업의 재무 건전성 지표.",
+    "aliases": ["debt ratio", "debt-to-equity", "d/e"]
+  },
+  {
+    "id": "acct-006",
+    "name": "유동비율",
+    "category": "회계",
+    "description": "유동자산을 유동부채로 나눈 비율. 단기 채무 상환 능력을 나타냄.",
+    "aliases": ["current ratio"]
+  },
+  {
+    "id": "acct-007",
+    "name": "영업현금흐름",
+    "category": "회계",
+    "description": "영업활동에서 실제로 발생한 현금의 유입·유출.",
+    "aliases": ["operating cash flow", "OCF"]
+  },
+  {
+    "id": "acct-008",
+    "name": "자본잠식",
+    "category": "회계",
+    "description": "누적 손실이 자본금을 잠식한 상태. 완전 자본잠식 시 상장폐지 위기.",
+    "aliases": ["capital impairment", "capital erosion"]
+  }
+]
