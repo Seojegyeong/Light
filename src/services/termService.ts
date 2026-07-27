@@ -17,6 +17,10 @@ class TermService {
   match(text: string): Term | undefined {
     return this.lookup.get(text.trim().toLowerCase());
   }
+
+  get keys(): Set<string> {
+    return new Set(this.lookup.keys());
+  }
 }
 
 export const termService = new TermService();
