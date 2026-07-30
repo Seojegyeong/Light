@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { Global, css } from '@emotion/react'
 import type { Term } from '@/types/term'
 import { termService } from '@/services/termService'
+import { TermTooltip } from './TermTooltip'
 
 interface TooltipState {
   term: Term
@@ -68,31 +69,8 @@ export function TooltipLayer(): React.ReactElement {
   return (
     <>
       <Global styles={resetStyles} />
-      {tooltip && <BasicTooltip term={tooltip.term} anchorRect={tooltip.anchorRect} />}
+      {tooltip && <TermTooltip term={tooltip.term} anchorRect={tooltip.anchorRect} />}
     </>
   )
 }
 
-// Sprint 3에서 TermTooltip(Emotion 스타일)으로 교체
-function BasicTooltip({ term, anchorRect }: { term: Term; anchorRect: DOMRect }): React.ReactElement {
-  return (
-    <div
-      style={{
-        position: 'fixed',
-        top: anchorRect.top - 64,
-        left: anchorRect.left,
-        background: '#1a1a2e',
-        color: '#fff',
-        padding: '8px 12px',
-        borderRadius: 6,
-        fontSize: 13,
-        zIndex: 2147483647,
-        pointerEvents: 'none',
-        maxWidth: 260,
-      }}
-    >
-      <strong>{term.name}</strong>
-      <div style={{ marginTop: 4, fontSize: 12 }}>{term.description}</div>
-    </div>
-  )
-}
