@@ -4,6 +4,7 @@ import createCache from '@emotion/cache'
 import { CacheProvider } from '@emotion/react'
 import { scan } from './scanner'
 import { TooltipLayer } from './TooltipLayer'
+import { color } from '@/styles/tokens'
 
 function injectHighlightStyles(): void {
   if (document.getElementById('pinkkok-styles')) return
@@ -11,7 +12,12 @@ function injectHighlightStyles(): void {
   style.id = 'pinkkok-styles'
   style.textContent = `
     [data-pinkkok] {
-      border-bottom: 2px dotted #f97316;
+      background-color: ${color.highlight.bg};
+      border-bottom: 1.5px dashed ${color.highlight.border};
+      border-radius: 2px;
+      padding: 1px 3px;
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
       cursor: default;
     }
   `
