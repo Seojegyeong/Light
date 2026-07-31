@@ -5,6 +5,7 @@ import { DEFAULT_SETTINGS } from '@/types/settings'
 import type { Settings } from '@/types/settings'
 import { SettingsContext } from './SettingsContext'
 import { TooltipLayer } from './TooltipLayer'
+import { FloatingPanel } from './FloatingPanel'
 
 interface Props {
   detectedTerms: Term[]
@@ -25,7 +26,7 @@ export function PinkKokApp({ detectedTerms }: Props): React.ReactElement {
     <SettingsContext.Provider value={{ settings, setSettings, detectedTerms }}>
       <Global styles={resetStyles} />
       <TooltipLayer />
-      {/* FloatingPanel — 4단계에서 추가 */}
+      <FloatingPanel detectedCount={detectedTerms.length} />
     </SettingsContext.Provider>
   )
 }
