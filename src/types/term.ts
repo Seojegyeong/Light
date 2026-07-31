@@ -12,4 +12,5 @@ export interface Term {
   category: TermCategory;
   description: string;
   aliases: string[];
+  example?: string;
 }
