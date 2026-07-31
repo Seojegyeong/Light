@@ -1,23 +1,16 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
-import { Global, css } from '@emotion/react'
 import type { Term } from '@/types/term'
 import { termService } from '@/services/termService'
 import { TermTooltip } from './TermTooltip'
+import { useSettings } from './SettingsContext'
 
 interface TooltipState {
   term: Term
   anchorRect: DOMRect
 }
 
-const resetStyles = css`
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-`
-
 export function TooltipLayer(): React.ReactElement {
+  const { settings } = useSettings()
   const [tooltip, setTooltip] = useState<TooltipState | null>(null)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -37,13 +30,14 @@ export function TooltipLayer(): React.ReactElement {
       const termKey = span.getAttribute('data-pinkkok') ?? ''
       const term = termService.match(termKey)
       if (!term) return
+      if (!settings.enabled || !settings.categories[term.category]) return
 
       clearTimer()
       timerRef.current = setTimeout(() => {
         setTooltip({ term, anchorRect: span.getBoundingClientRect() })
       }, 150)
     },
-    [clearTimer]
+    [clearTimer, settings]
   )
 
   const handleMouseOut = useCallback(
@@ -68,7 +62,6 @@ export function TooltipLayer(): React.ReactElement {
 
   return (
     <>
-      <Global styles={resetStyles} />
       {tooltip && <TermTooltip term={tooltip.term} anchorRect={tooltip.anchorRect} />}
     </>
   )

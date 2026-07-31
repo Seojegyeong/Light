@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import createCache from '@emotion/cache'
 import { CacheProvider } from '@emotion/react'
 import { scan } from './scanner'
-import { TooltipLayer } from './TooltipLayer'
+import { PinkKokApp } from './PinkKokApp'
 import { color } from '@/styles/tokens'
 
 function injectHighlightStyles(): void {
@@ -39,15 +39,15 @@ function mount(): void {
 
   const emotionCache = createCache({ key: 'pinkkok', container: shadowRoot })
 
+  const detectedTerms = scan()
+
   ReactDOM.createRoot(mountPoint).render(
     <React.StrictMode>
       <CacheProvider value={emotionCache}>
-        <TooltipLayer />
+        <PinkKokApp detectedTerms={detectedTerms} />
       </CacheProvider>
     </React.StrictMode>
   )
-
-  scan()
 }
 
 if (document.readyState === 'loading') {
