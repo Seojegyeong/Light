@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from '@emotion/styled'
 import { color, fontFamily, radius, spacing } from '@/styles/tokens'
-import { useSettings } from './SettingsContext'
+import { useSettings } from '../SettingsContext'
 import type { TermCategory } from '@/types/term'
 
 const CATEGORIES: TermCategory[] = ['주식', '채권', '거시경제', '파생상품', '부동산', '회계']
