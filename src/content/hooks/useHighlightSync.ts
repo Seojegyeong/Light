@@ -14,7 +14,7 @@ function buildStyles(settings: Settings): string {
   const border = settings.color
 
   const baseRule = settings.enabled
-    ? `[data-pinkkok] {
+    ? `[data-light] {
         background-color: ${bg};
         border-bottom: 1.5px dashed ${border};
         border-radius: 2px;
@@ -23,7 +23,7 @@ function buildStyles(settings: Settings): string {
         -webkit-box-decoration-break: clone;
         cursor: default;
       }`
-    : `[data-pinkkok] {
+    : `[data-light] {
         background-color: transparent;
         border-bottom: none;
         cursor: default;
@@ -31,7 +31,7 @@ function buildStyles(settings: Settings): string {
 
   const categoryRules = Object.entries(settings.categories)
     .filter(([, enabled]) => !enabled)
-    .map(([cat]) => `[data-pinkkok-category="${cat}"] {
+    .map(([cat]) => `[data-light-category="${cat}"] {
         background-color: transparent !important;
         border-bottom: none !important;
       }`)
@@ -41,7 +41,7 @@ function buildStyles(settings: Settings): string {
 
 export function useHighlightSync(settings: Settings): void {
   useEffect(() => {
-    const el = document.getElementById('pinkkok-styles')
+    const el = document.getElementById('light-styles')
     if (!el) return
     el.textContent = buildStyles(settings)
   }, [settings])
