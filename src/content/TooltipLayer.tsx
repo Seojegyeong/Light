@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
-import { Global, css } from '@emotion/react'
 import type { Term } from '@/types/term'
 import { termService } from '@/services/termService'
 import { TermTooltip } from './TermTooltip'
@@ -8,14 +7,6 @@ interface TooltipState {
   term: Term
   anchorRect: DOMRect
 }
-
-const resetStyles = css`
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-`
 
 export function TooltipLayer(): React.ReactElement {
   const [tooltip, setTooltip] = useState<TooltipState | null>(null)
@@ -68,7 +59,6 @@ export function TooltipLayer(): React.ReactElement {
 
   return (
     <>
-      <Global styles={resetStyles} />
       {tooltip && <TermTooltip term={tooltip.term} anchorRect={tooltip.anchorRect} />}
     </>
   )
