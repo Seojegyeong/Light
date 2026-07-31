@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import type { Settings } from '@/types/settings'
 import { DEFAULT_SETTINGS } from '@/types/settings'
 
-const STORAGE_KEY = 'pinkkok_settings'
+const STORAGE_KEY = 'light_settings'
 
 export function useSettingsStorage(): [Settings, React.Dispatch<React.SetStateAction<Settings>>] {
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS)

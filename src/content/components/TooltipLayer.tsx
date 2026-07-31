@@ -24,10 +24,10 @@ export function TooltipLayer(): React.ReactElement {
   const handleMouseOver = useCallback(
     (e: MouseEvent) => {
       const target = e.target as Element
-      const span = target.closest('[data-pinkkok]') as HTMLElement | null
+      const span = target.closest('[data-light]') as HTMLElement | null
       if (!span) return
 
-      const termKey = span.getAttribute('data-pinkkok') ?? ''
+      const termKey = span.getAttribute('data-light') ?? ''
       const term = termService.match(termKey)
       if (!term) return
       if (!settings.enabled || !settings.categories[term.category]) return
@@ -43,7 +43,7 @@ export function TooltipLayer(): React.ReactElement {
   const handleMouseOut = useCallback(
     (e: MouseEvent) => {
       const target = e.target as Element
-      if (!target.closest('[data-pinkkok]')) return
+      if (!target.closest('[data-light]')) return
       clearTimer()
       setTooltip(null)
     },
