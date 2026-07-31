@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import styled from '@emotion/styled'
 import { color, fontFamily, radius, shadow, spacing } from '@/styles/tokens'
 import { useSettings } from './SettingsContext'
+import { NoteTab } from './NoteTab'
 
 type Tab = 'note' | 'settings'
 
@@ -122,8 +123,7 @@ export function FloatingPanel({ detectedCount }: Props): React.ReactElement {
             </TabButton>
           </TabHeader>
           <TabContent>
-            {/* NoteTab / SettingsTab — 5·6단계에서 교체 */}
-            {activeTab === 'note' ? '내 노트 탭' : '설정 탭'}
+            {activeTab === 'note' ? <NoteTab /> : '설정 탭'}
           </TabContent>
         </Panel>
       )}
