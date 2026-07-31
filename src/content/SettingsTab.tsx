@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import styled from '@emotion/styled'
 import { color, fontFamily, radius, spacing } from '@/styles/tokens'
 import { useSettings } from './SettingsContext'
@@ -10,6 +10,9 @@ const COLOR_PRESETS: { hex: string; label: string }[] = [
   { hex: '#1779e1', label: '파랑' },
   { hex: '#67b36a', label: '초록' },
   { hex: '#e47d6d', label: '주황' },
+  { hex: '#9b5de5', label: '보라' },
+  { hex: '#e5698b', label: '핑크' },
+  { hex: '#e53935', label: '빨강' },
 ]
 
 // ─── Toggle ────────────────────────────────────────────────────
@@ -92,6 +95,7 @@ const ColorRow = styled.div`
   display: flex;
   gap: ${spacing[2]};
   margin-top: ${spacing[2]};
+  flex-wrap: wrap;
 `
 
 const ColorSwatch = styled.button<{ $hex: string; $selected: boolean }>`
@@ -103,38 +107,13 @@ const ColorSwatch = styled.button<{ $hex: string; $selected: boolean }>`
   cursor: pointer;
   outline: ${p => (p.$selected ? `2px solid ${p.$hex}` : 'none')};
   outline-offset: 2px;
+  flex-shrink: 0;
   transition: outline 0.15s ease, border 0.15s ease;
-`
-
-const ColorPickerButton = styled.button<{ $hex: string; $selected: boolean }>`
-  width: 22px;
-  height: 22px;
-  border-radius: ${radius.full};
-  background: ${p => p.$hex};
-  border: 2px solid ${p => (p.$selected ? color.neutral900 : color.neutral200)};
-  cursor: pointer;
-  outline: ${p => (p.$selected ? `2px solid ${p.$hex}` : 'none')};
-  outline-offset: 2px;
-  position: relative;
-  overflow: hidden;
-  transition: outline 0.15s ease, border 0.15s ease;
-`
-
-const HiddenColorInput = styled.input`
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer;
-  border: none;
-  padding: 0;
 `
 
 // ─── Component ─────────────────────────────────────────────────
 export function SettingsTab(): React.ReactElement {
   const { settings, setSettings } = useSettings()
-  const colorInputRef = useRef<HTMLInputElement>(null)
 
   const setEnabled = (v: boolean) =>
     setSettings(prev => ({ ...prev, enabled: v }))
@@ -147,8 +126,6 @@ export function SettingsTab(): React.ReactElement {
 
   const setColor = (hex: string) =>
     setSettings(prev => ({ ...prev, color: hex }))
-
-  const isPreset = COLOR_PRESETS.some(p => p.hex === settings.color)
 
   return (
     <div>
@@ -186,18 +163,6 @@ export function SettingsTab(): React.ReactElement {
               onClick={() => setColor(hex)}
             />
           ))}
-          <ColorPickerButton
-            $hex={isPreset ? color.neutral200 : settings.color}
-            $selected={!isPreset}
-            onClick={() => colorInputRef.current?.click()}
-          >
-            <HiddenColorInput
-              ref={colorInputRef}
-              type="color"
-              value={settings.color}
-              onChange={e => setColor(e.target.value)}
-            />
-          </ColorPickerButton>
         </ColorRow>
       </Section>
     </div>
