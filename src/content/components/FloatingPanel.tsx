@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from '@emotion/styled'
 import { color, fontFamily, radius, shadow, spacing } from '@/styles/tokens'
-import { useSettings } from './SettingsContext'
+import { useSettings } from '../SettingsContext'
 import { NoteTab } from './NoteTab'
 import { SettingsTab } from './SettingsTab'
 

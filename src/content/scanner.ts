@@ -11,17 +11,26 @@ function buildTermRegex(): RegExp {
   const escaped = [...termService.keys]
     .sort((a, b) => b.length - a.length)
     .map(key => key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
-  return new RegExp(`(${escaped.join('|')})`, 'gi')
+  return new RegExp(`(?<![a-zA-Z])(${escaped.join('|')})(?![a-zA-Z])`, 'gi')
 }
 
 const TERM_REGEX = buildTermRegex()
+
+function hasSkipAncestor(el: Element): boolean {
+  let cur: Element | null = el
+  while (cur) {
+    if (SKIP_TAGS.has(cur.tagName)) return true
+    cur = cur.parentElement
+  }
+  return false
+}
 
 function createTextWalker(root: Node): TreeWalker {
   return document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
     acceptNode(node) {
       const parent = node.parentElement
       if (!parent) return NodeFilter.FILTER_REJECT
-      if (SKIP_TAGS.has(parent.tagName)) return NodeFilter.FILTER_REJECT
+      if (hasSkipAncestor(parent)) return NodeFilter.FILTER_REJECT
       if (isAlreadyProcessed(parent)) return NodeFilter.FILTER_REJECT
       if (!node.textContent?.trim()) return NodeFilter.FILTER_SKIP
       return NodeFilter.FILTER_ACCEPT

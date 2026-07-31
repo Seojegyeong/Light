@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react'
 import type { Term } from '@/types/term'
 import { termService } from '@/services/termService'
 import { TermTooltip } from './TermTooltip'
-import { useSettings } from './SettingsContext'
+import { useSettings } from '../SettingsContext'
 
 interface TooltipState {
   term: Term

@@ -2,10 +2,10 @@ import React from 'react'
 import { Global, css } from '@emotion/react'
 import type { Term } from '@/types/term'
 import { SettingsContext, useSettings } from './SettingsContext'
-import { TooltipLayer } from './TooltipLayer'
-import { FloatingPanel } from './FloatingPanel'
-import { useHighlightSync } from './useHighlightSync'
-import { useSettingsStorage } from './useSettingsStorage'
+import { TooltipLayer } from './components/TooltipLayer'
+import { FloatingPanel } from './components/FloatingPanel'
+import { useHighlightSync } from './hooks/useHighlightSync'
+import { useSettingsStorage } from './hooks/useSettingsStorage'
 
 interface Props {
   detectedTerms: Term[]
