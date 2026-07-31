@@ -4,16 +4,20 @@ import createCache from '@emotion/cache'
 import { CacheProvider } from '@emotion/react'
 import { scan } from './scanner'
 import { PinkKokApp } from './PinkKokApp'
-import { color } from '@/styles/tokens'
+import { DEFAULT_SETTINGS } from '@/types/settings'
 
 function injectHighlightStyles(): void {
   if (document.getElementById('pinkkok-styles')) return
   const style = document.createElement('style')
   style.id = 'pinkkok-styles'
+  const hex = DEFAULT_SETTINGS.color.replace('#', '')
+  const r = parseInt(hex.slice(0, 2), 16)
+  const g = parseInt(hex.slice(2, 4), 16)
+  const b = parseInt(hex.slice(4, 6), 16)
   style.textContent = `
     [data-pinkkok] {
-      background-color: ${color.highlight.bg};
-      border-bottom: 1.5px dashed ${color.highlight.border};
+      background-color: rgba(${r}, ${g}, ${b}, 0.2);
+      border-bottom: 1.5px dashed ${DEFAULT_SETTINGS.color};
       border-radius: 2px;
       padding: 1px 3px;
       box-decoration-break: clone;

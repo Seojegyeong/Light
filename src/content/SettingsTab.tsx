@@ -1,17 +1,19 @@
 import React from 'react'
 import styled from '@emotion/styled'
 import { color, fontFamily, radius, spacing } from '@/styles/tokens'
-import type { HighlightColor } from '@/types/settings'
 import { useSettings } from './SettingsContext'
 import type { TermCategory } from '@/types/term'
 
 const CATEGORIES: TermCategory[] = ['주식', '채권', '거시경제', '파생상품', '부동산', '회계']
 
-const COLOR_PRESETS: Record<HighlightColor, string> = {
-  blue: color.blue500,
-  green: '#67b36a',
-  orange: '#e47d6d',
-}
+const COLOR_PRESETS: { hex: string; label: string }[] = [
+  { hex: '#1779e1', label: '파랑' },
+  { hex: '#67b36a', label: '초록' },
+  { hex: '#e47d6d', label: '주황' },
+  { hex: '#9b5de5', label: '보라' },
+  { hex: '#e5698b', label: '핑크' },
+  { hex: '#e53935', label: '빨강' },
+]
 
 // ─── Toggle ────────────────────────────────────────────────────
 const ToggleTrack = styled.button<{ $on: boolean }>`
@@ -93,6 +95,7 @@ const ColorRow = styled.div`
   display: flex;
   gap: ${spacing[2]};
   margin-top: ${spacing[2]};
+  flex-wrap: wrap;
 `
 
 const ColorSwatch = styled.button<{ $hex: string; $selected: boolean }>`
@@ -104,6 +107,7 @@ const ColorSwatch = styled.button<{ $hex: string; $selected: boolean }>`
   cursor: pointer;
   outline: ${p => (p.$selected ? `2px solid ${p.$hex}` : 'none')};
   outline-offset: 2px;
+  flex-shrink: 0;
   transition: outline 0.15s ease, border 0.15s ease;
 `
 
@@ -120,8 +124,8 @@ export function SettingsTab(): React.ReactElement {
       categories: { ...prev.categories, [cat]: v },
     }))
 
-  const setColor = (c: HighlightColor) =>
-    setSettings(prev => ({ ...prev, color: c }))
+  const setColor = (hex: string) =>
+    setSettings(prev => ({ ...prev, color: hex }))
 
   return (
     <div>
@@ -151,16 +155,14 @@ export function SettingsTab(): React.ReactElement {
       <Section>
         <SectionLabel>하이라이트 색상</SectionLabel>
         <ColorRow>
-          {(Object.entries(COLOR_PRESETS) as [HighlightColor, string][]).map(
-            ([key, hex]) => (
-              <ColorSwatch
-                key={key}
-                $hex={hex}
-                $selected={settings.color === key}
-                onClick={() => setColor(key)}
-              />
-            )
-          )}
+          {COLOR_PRESETS.map(({ hex, label }) => (
+            <ColorSwatch
+              key={label}
+              $hex={hex}
+              $selected={settings.color === hex}
+              onClick={() => setColor(hex)}
+            />
+          ))}
         </ColorRow>
       </Section>
     </div>

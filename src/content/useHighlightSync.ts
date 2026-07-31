@@ -1,14 +1,17 @@
 import { useEffect } from 'react'
-import type { Settings, HighlightColor } from '@/types/settings'
+import type { Settings } from '@/types/settings'
 
-const COLOR_MAP: Record<HighlightColor, { bg: string; border: string }> = {
-  blue:   { bg: 'rgba(200, 224, 255, 0.35)', border: '#1779e1' },
-  green:  { bg: 'rgba(103, 179, 106, 0.2)',  border: '#67b36a' },
-  orange: { bg: 'rgba(228, 125, 109, 0.2)',  border: '#e47d6d' },
+function hexToRgba(hex: string, alpha: number): string {
+  const h = hex.replace('#', '')
+  const r = parseInt(h.slice(0, 2), 16)
+  const g = parseInt(h.slice(2, 4), 16)
+  const b = parseInt(h.slice(4, 6), 16)
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`
 }
 
 function buildStyles(settings: Settings): string {
-  const { bg, border } = COLOR_MAP[settings.color]
+  const bg = hexToRgba(settings.color, 0.2)
+  const border = settings.color
 
   const baseRule = settings.enabled
     ? `[data-pinkkok] {

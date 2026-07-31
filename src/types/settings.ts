@@ -1,11 +1,9 @@
 import type { TermCategory } from './term'
 
-export type HighlightColor = 'blue' | 'green' | 'orange'
-
 export interface Settings {
   enabled: boolean
   categories: Record<TermCategory, boolean>
-  color: HighlightColor
+  color: string
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -18,5 +16,5 @@ export const DEFAULT_SETTINGS: Settings = {
     부동산: true,
     회계: true,
   },
-  color: 'blue',
+  color: '#1779e1',
 }
