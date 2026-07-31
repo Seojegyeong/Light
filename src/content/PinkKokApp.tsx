@@ -1,12 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Global, css } from '@emotion/react'
 import type { Term } from '@/types/term'
-import { DEFAULT_SETTINGS } from '@/types/settings'
-import type { Settings } from '@/types/settings'
 import { SettingsContext, useSettings } from './SettingsContext'
 import { TooltipLayer } from './TooltipLayer'
 import { FloatingPanel } from './FloatingPanel'
 import { useHighlightSync } from './useHighlightSync'
+import { useSettingsStorage } from './useSettingsStorage'
 
 interface Props {
   detectedTerms: Term[]
@@ -34,7 +33,7 @@ function AppInner({ detectedTerms }: Props): React.ReactElement {
 }
 
 export function PinkKokApp({ detectedTerms }: Props): React.ReactElement {
-  const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS)
+  const [settings, setSettings] = useSettingsStorage()
 
   return (
     <SettingsContext.Provider value={{ settings, setSettings, detectedTerms }}>
