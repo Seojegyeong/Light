@@ -9,17 +9,29 @@ export function useSettingsStorage(): [Settings, React.Dispatch<React.SetStateAc
   const isLoadedRef = useRef(false)
 
   useEffect(() => {
-    chrome.storage.sync.get(STORAGE_KEY, result => {
-      if (result[STORAGE_KEY]) {
-        setSettings(result[STORAGE_KEY] as Settings)
-      }
+    try {
+      chrome.storage.sync.get(STORAGE_KEY, result => {
+        try {
+          if (result[STORAGE_KEY]) {
+            setSettings(result[STORAGE_KEY] as Settings)
+          }
+        } catch {
+          // 파싱 실패 시 기본값 유지
+        }
+        isLoadedRef.current = true
+      })
+    } catch {
       isLoadedRef.current = true
-    })
+    }
   }, [])
 
   useEffect(() => {
     if (!isLoadedRef.current) return
-    chrome.storage.sync.set({ [STORAGE_KEY]: settings })
+    try {
+      chrome.storage.sync.set({ [STORAGE_KEY]: settings })
+    } catch {
+      // 저장 실패 시 메모리 상태 유지
+    }
   }, [settings])
 
   return [settings, setSettings]
