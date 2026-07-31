@@ -18,10 +18,16 @@ export const color = {
   border: '#e6e8ea',
 
   // Text
-  textPrimary: '#141619',
-  textBody: '#393b3e',
-  textCaption: '#6f7275',
+  textPrimary: '#191b1d',
+  textBody: '#535559',
+  textCaption: '#8d8f92',
   textMuted: '#606369',
+
+  // Highlight (semantic)
+  highlight: {
+    bg: 'rgba(200, 224, 255, 0.35)',
+    border: '#1779e1',
+  },
 
   // Category accent
   category: {
@@ -34,25 +40,33 @@ export const color = {
   },
 } as const;
 
+export const fontFamily = {
+  base: "'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif",
+} as const;
+
 export const typography = {
   headline: {
+    fontFamily: fontFamily.base,
     fontSize: '22px',
-    fontWeight: 900,
+    fontWeight: 800,
     letterSpacing: '-0.22px',
     color: color.textPrimary,
   },
   subhead: {
+    fontFamily: fontFamily.base,
     fontSize: '15px',
     fontWeight: 500,
     color: color.textPrimary,
   },
   body: {
+    fontFamily: fontFamily.base,
     fontSize: '15px',
     fontWeight: 400,
     lineHeight: 1.7,
     color: color.textBody,
   },
   caption: {
+    fontFamily: fontFamily.base,
     fontSize: '12px',
     fontWeight: 500,
     color: color.textCaption,
