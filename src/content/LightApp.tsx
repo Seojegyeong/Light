@@ -33,7 +33,7 @@ function AppInner({ detectedTerms }: Props): React.ReactElement {
   )
 }
 
-export function PinkKokApp({ detectedTerms }: Props): React.ReactElement {
+export function LightApp({ detectedTerms }: Props): React.ReactElement {
   const [settings, setSettings] = useSettingsStorage()
 
   return (
