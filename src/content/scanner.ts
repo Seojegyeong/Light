@@ -11,7 +11,7 @@ function buildTermRegex(): RegExp {
   const escaped = [...termService.keys]
     .sort((a, b) => b.length - a.length)
     .map(key => key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
-  return new RegExp(`(${escaped.join('|')})`, 'gi')
+  return new RegExp(`(?<![a-zA-Z])(${escaped.join('|')})(?![a-zA-Z])`, 'gi')
 }
 
 const TERM_REGEX = buildTermRegex()
