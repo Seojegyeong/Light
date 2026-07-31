@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import createCache from '@emotion/cache'
 import { CacheProvider } from '@emotion/react'
 import { scan } from './scanner'
-import { PinkKokApp } from './PinkKokApp'
+import { LightApp } from './LightApp'
 import { DEFAULT_SETTINGS } from '@/types/settings'
 
 function injectHighlightStyles(): void {
@@ -48,7 +48,7 @@ function mount(): void {
   ReactDOM.createRoot(mountPoint).render(
     <React.StrictMode>
       <CacheProvider value={emotionCache}>
-        <PinkKokApp detectedTerms={detectedTerms} />
+        <LightApp detectedTerms={detectedTerms} />
       </CacheProvider>
     </React.StrictMode>
   )
