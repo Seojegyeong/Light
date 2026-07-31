@@ -37,7 +37,7 @@ export function TooltipLayer(): React.ReactElement {
         setTooltip({ term, anchorRect: span.getBoundingClientRect() })
       }, 150)
     },
-    [clearTimer]
+    [clearTimer, settings]
   )
 
   const handleMouseOut = useCallback(

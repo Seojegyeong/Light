@@ -38,25 +38,6 @@ const FloatButton = styled.button`
   }
 `
 
-const Badge = styled.span`
-  position: absolute;
-  top: -4px;
-  right: -4px;
-  min-width: 18px;
-  height: 18px;
-  padding: 0 4px;
-  border-radius: ${radius.full};
-  background: #fff;
-  color: ${color.blue500};
-  font-family: ${fontFamily.base};
-  font-size: 10px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
-`
-
 const Panel = styled.div`
   position: fixed;
   bottom: ${BOTTOM_MARGIN + 50 + 12}px;
@@ -94,6 +75,8 @@ const TabButton = styled.button<{ $active: boolean }>`
 const TabContent = styled.div`
   padding: ${spacing[3]} ${spacing[4]};
   min-height: 120px;
+  max-height: 360px;
+  overflow-y: auto;
 `
 
 interface Props {
@@ -130,7 +113,6 @@ export function FloatingPanel({ detectedCount }: Props): React.ReactElement {
       )}
       <FloatButton onClick={() => setIsOpen(prev => !prev)}>
         {settings.enabled ? detectedCount : '—'}
-        {detectedCount > 0 && <Badge>{detectedCount}</Badge>}
       </FloatButton>
     </>
   )
