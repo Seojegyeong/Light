@@ -1,12 +1,10 @@
 <div align="center">
 
-# light
-
-경제 뉴스를 읽다가 모르는 금융 용어가 나와도 검색하러 떠날 필요 없어요.<br>
-light가 기사 안에서 바로 알려드립니다.
+<img width="1280" height=auto alt="main_1" src="https://github.com/user-attachments/assets/b716c4e9-2c1e-4926-a1b7-612f279ce9bd" />
 
 </div>
 
+<br>
 <br>
 
 ## ✨ About light
@@ -19,11 +17,6 @@ light는 경제 뉴스 기사에서 금융 용어를 자동으로 감지하고 �
 light는 이런 불편을 줄이기 위해 만들어졌어요.
 용어에 마우스를 올리는 것만으로 정의와 예시 문장을 바로 확인할 수 있어요.
 
-<br>
-
-## 📸 Screenshots
-
-<!-- 스크린샷 이미지 추가 예정 -->
 
 <br>
 
@@ -64,5 +57,9 @@ light는 광고 없이, 수집하는 개인정보 없이 작동합니다.<br>
 <br>
 
 <div align="center">
+  
+<img width="100" height=auto alt="logo" src="https://github.com/user-attachments/assets/77ca518b-231b-43e4-96cd-0e1fde0ab9ef" />
+  
 <sub>© 2026 light. All rights reserved.</sub>
+
 </div>
