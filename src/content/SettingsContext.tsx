@@ -7,6 +7,7 @@ interface SettingsContextValue {
   settings: Settings
   setSettings: React.Dispatch<React.SetStateAction<Settings>>
   detectedTerms: Term[]
+  storageError: string | null
 }
 
 export const SettingsContext = createContext<SettingsContextValue | null>(null)

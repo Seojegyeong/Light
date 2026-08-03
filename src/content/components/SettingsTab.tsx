@@ -111,9 +111,21 @@ const ColorSwatch = styled.button<{ $hex: string; $selected: boolean }>`
   transition: outline 0.15s ease, border 0.15s ease;
 `
 
+const ErrorBanner = styled.div`
+  background: #fff3f3;
+  border: 1px solid #f5b8b8;
+  border-radius: ${radius.sm};
+  padding: ${spacing[2]} ${spacing[3]};
+  margin-bottom: ${spacing[3]};
+  font-family: ${fontFamily.base};
+  font-size: 12px;
+  color: #c0392b;
+  line-height: 1.5;
+`
+
 // ─── Component ─────────────────────────────────────────────────
 export function SettingsTab(): React.ReactElement {
-  const { settings, setSettings } = useSettings()
+  const { settings, setSettings, storageError } = useSettings()
 
   const setEnabled = (v: boolean) =>
     setSettings(prev => ({ ...prev, enabled: v }))
@@ -129,6 +141,7 @@ export function SettingsTab(): React.ReactElement {
 
   return (
     <div>
+      {storageError && <ErrorBanner>{storageError}</ErrorBanner>}
       <Section>
         <Row>
           <Label>전체 사용</Label>

@@ -34,11 +34,11 @@ function AppInner({ detectedTerms }: Props): React.ReactElement {
 }
 
 export function LightApp({ detectedTerms }: Props): React.ReactElement {
-  const [settings, setSettings] = useSettingsStorage()
+  const [settings, setSettings, storageError] = useSettingsStorage()
 
   return (
     <ErrorBoundary>
-      <SettingsContext.Provider value={{ settings, setSettings, detectedTerms }}>
+      <SettingsContext.Provider value={{ settings, setSettings, detectedTerms, storageError }}>
         <AppInner detectedTerms={detectedTerms} />
       </SettingsContext.Provider>
     </ErrorBoundary>
