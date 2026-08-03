@@ -7,12 +7,12 @@ import type { TermCategory } from '@/types/term'
 const CATEGORIES: TermCategory[] = ['주식', '채권', '거시경제', '파생상품', '부동산', '회계']
 
 const COLOR_PRESETS: { hex: string; label: string }[] = [
-  { hex: '#1779e1', label: '파랑' },
-  { hex: '#67b36a', label: '초록' },
-  { hex: '#e47d6d', label: '주황' },
-  { hex: '#9b5de5', label: '보라' },
-  { hex: '#e5698b', label: '핑크' },
-  { hex: '#e53935', label: '빨강' },
+  { hex: '#59A6FF', label: '파랑' },
+  { hex: '#E0C8F7', label: '보라' },
+  { hex: '#FFC7DF', label: '핑크' },
+  { hex: '#FDF1C4', label: '노랑' },
+  { hex: '#DBF9E7', label: '초록' },
+  { hex: '#D8F8F4', label: '민트' },
 ]
 
 // ─── Toggle ────────────────────────────────────────────────────
