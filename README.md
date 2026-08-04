@@ -33,9 +33,9 @@ light는 이런 불편을 줄이기 위해 만들어졌어요.
 
 ## 🚀 Install
 
-[Chrome Web Store](https://chromewebstore.google.com)에서 **light**를 검색하거나 아래 링크에서 설치하세요.
+아래 링크에서 바로 설치하세요.
 
-> 스토어 링크는 심사 완료 후 업데이트됩니다.
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/oakngefnlimlmgcoadomekojacbminco?label=Chrome%20Web%20Store&logo=googlechrome&logoColor=white)](https://chromewebstore.google.com/detail/light/oakngefnlimlmgcoadomekojacbminco)
 
 <br>
 
