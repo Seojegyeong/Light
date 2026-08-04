@@ -4,12 +4,18 @@ import { DEFAULT_SETTINGS } from '@/types/settings'
 
 const STORAGE_KEY = 'light_settings'
 
-export function useSettingsStorage(): [Settings, React.Dispatch<React.SetStateAction<Settings>>] {
+export function useSettingsStorage(): [Settings, React.Dispatch<React.SetStateAction<Settings>>, string | null] {
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS)
+  const [storageError, setStorageError] = useState<string | null>(null)
   const isLoadedRef = useRef(false)
 
   useEffect(() => {
     chrome.storage.sync.get(STORAGE_KEY, result => {
+      if (chrome.runtime.lastError) {
+        setStorageError('설정을 불러오는 데 실패했습니다. 기본값으로 실행됩니다.')
+        isLoadedRef.current = true
+        return
+      }
       if (result[STORAGE_KEY]) {
         setSettings(result[STORAGE_KEY] as Settings)
       }
@@ -19,8 +25,12 @@ export function useSettingsStorage(): [Settings, React.Dispatch<React.SetStateAc
 
   useEffect(() => {
     if (!isLoadedRef.current) return
-    chrome.storage.sync.set({ [STORAGE_KEY]: settings })
+    chrome.storage.sync.set({ [STORAGE_KEY]: settings }, () => {
+      if (chrome.runtime.lastError) {
+        setStorageError('설정 저장에 실패했습니다.')
+      }
+    })
   }, [settings])
 
-  return [settings, setSettings]
+  return [settings, setSettings, storageError]
 }

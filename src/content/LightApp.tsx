@@ -4,6 +4,7 @@ import type { Term } from '@/types/term'
 import { SettingsContext, useSettings } from './SettingsContext'
 import { TooltipLayer } from './components/TooltipLayer'
 import { FloatingPanel } from './components/FloatingPanel'
+import { ErrorBoundary } from './components/ErrorBoundary'
 import { useHighlightSync } from './hooks/useHighlightSync'
 import { useSettingsStorage } from './hooks/useSettingsStorage'
 
@@ -32,12 +33,14 @@ function AppInner({ detectedTerms }: Props): React.ReactElement {
   )
 }
 
-export function PinkKokApp({ detectedTerms }: Props): React.ReactElement {
-  const [settings, setSettings] = useSettingsStorage()
+export function LightApp({ detectedTerms }: Props): React.ReactElement {
+  const [settings, setSettings, storageError] = useSettingsStorage()
 
   return (
-    <SettingsContext.Provider value={{ settings, setSettings, detectedTerms }}>
-      <AppInner detectedTerms={detectedTerms} />
-    </SettingsContext.Provider>
+    <ErrorBoundary>
+      <SettingsContext.Provider value={{ settings, setSettings, detectedTerms, storageError }}>
+        <AppInner detectedTerms={detectedTerms} />
+      </SettingsContext.Provider>
+    </ErrorBoundary>
   )
 }

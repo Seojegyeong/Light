@@ -7,12 +7,12 @@ import type { TermCategory } from '@/types/term'
 const CATEGORIES: TermCategory[] = ['주식', '채권', '거시경제', '파생상품', '부동산', '회계']
 
 const COLOR_PRESETS: { hex: string; label: string }[] = [
-  { hex: '#1779e1', label: '파랑' },
-  { hex: '#67b36a', label: '초록' },
-  { hex: '#e47d6d', label: '주황' },
-  { hex: '#9b5de5', label: '보라' },
-  { hex: '#e5698b', label: '핑크' },
-  { hex: '#e53935', label: '빨강' },
+  { hex: '#59A6FF', label: '파랑' },
+  { hex: '#E0C8F7', label: '보라' },
+  { hex: '#FFC7DF', label: '핑크' },
+  { hex: '#FDF1C4', label: '노랑' },
+  { hex: '#DBF9E7', label: '초록' },
+  { hex: '#D8F8F4', label: '민트' },
 ]
 
 // ─── Toggle ────────────────────────────────────────────────────
@@ -111,9 +111,21 @@ const ColorSwatch = styled.button<{ $hex: string; $selected: boolean }>`
   transition: outline 0.15s ease, border 0.15s ease;
 `
 
+const ErrorBanner = styled.div`
+  background: #fff3f3;
+  border: 1px solid #f5b8b8;
+  border-radius: ${radius.sm};
+  padding: ${spacing[2]} ${spacing[3]};
+  margin-bottom: ${spacing[3]};
+  font-family: ${fontFamily.base};
+  font-size: 12px;
+  color: #c0392b;
+  line-height: 1.5;
+`
+
 // ─── Component ─────────────────────────────────────────────────
 export function SettingsTab(): React.ReactElement {
-  const { settings, setSettings } = useSettings()
+  const { settings, setSettings, storageError } = useSettings()
 
   const setEnabled = (v: boolean) =>
     setSettings(prev => ({ ...prev, enabled: v }))
@@ -129,6 +141,7 @@ export function SettingsTab(): React.ReactElement {
 
   return (
     <div>
+      {storageError && <ErrorBanner>{storageError}</ErrorBanner>}
       <Section>
         <Row>
           <Label>전체 사용</Label>
