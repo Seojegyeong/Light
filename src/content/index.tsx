@@ -2,9 +2,10 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import createCache from '@emotion/cache'
 import { CacheProvider } from '@emotion/react'
-import { scan } from './scanner'
+import { scan, scanWithTerms } from './scanner'
 import { LightApp } from './LightApp'
 import { DEFAULT_SETTINGS } from '@/types/settings'
+import { extractTermsWithAI } from '@/services/aiExtractService'
 
 function injectHighlightStyles(): void {
   if (document.getElementById('light-styles')) return
@@ -28,7 +29,7 @@ function injectHighlightStyles(): void {
   document.head.appendChild(style)
 }
 
-function mount(): void {
+async function mount(): Promise<void> {
   if (document.getElementById('light-root')) return
 
   injectHighlightStyles()
@@ -43,7 +44,19 @@ function mount(): void {
 
   const emotionCache = createCache({ key: 'light', container: shadowRoot })
 
-  const detectedTerms = scan()
+  const { light_api_key: apiKey } = await chrome.storage.local.get('light_api_key') as { light_api_key?: string }
+
+  let detectedTerms = scan()
+
+  if (apiKey) {
+    try {
+      const pageText = document.body.innerText
+      const aiTerms = await extractTermsWithAI(pageText, apiKey)
+      detectedTerms = scanWithTerms(aiTerms)
+    } catch {
+      // AI 추출 실패 시 terms.json 결과 유지
+    }
+  }
 
   ReactDOM.createRoot(mountPoint).render(
     <React.StrictMode>
@@ -55,7 +68,7 @@ function mount(): void {
 }
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', mount)
+  document.addEventListener('DOMContentLoaded', () => { void mount() })
 } else {
-  mount()
+  void mount()
 }
