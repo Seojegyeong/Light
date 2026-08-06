@@ -6,6 +6,8 @@ import type { Settings } from '@/types/settings'
 interface SettingsContextValue {
   settings: Settings
   setSettings: React.Dispatch<React.SetStateAction<Settings>>
+  apiKey: string
+  setApiKey: (key: string) => void
   detectedTerms: Term[]
   storageError: string | null
 }

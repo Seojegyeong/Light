@@ -4,6 +4,7 @@ export interface Settings {
   enabled: boolean
   categories: Record<TermCategory, boolean>
   color: string
+  apiKey?: string
 }
 
 export const DEFAULT_SETTINGS: Settings = {
