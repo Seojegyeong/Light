@@ -7,14 +7,14 @@ const SKIP_TAGS = new Set([
   'NOSCRIPT', 'SELECT', 'CODE', 'PRE',
 ])
 
-function buildTermRegex(): RegExp {
-  const escaped = [...termService.keys]
+function buildRegexFromKeys(keys: string[]): RegExp {
+  const escaped = keys
     .sort((a, b) => b.length - a.length)
     .map(key => key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
   return new RegExp(`(?<![a-zA-Z])(${escaped.join('|')})(?![a-zA-Z])`, 'gi')
 }
 
-const TERM_REGEX = buildTermRegex()
+const TERM_REGEX = buildRegexFromKeys([...termService.keys])
 
 function hasSkipAncestor(el: Element): boolean {
   let cur: Element | null = el
@@ -38,39 +38,33 @@ function createTextWalker(root: Node): TreeWalker {
   })
 }
 
-function replaceTextNode(
-  textNode: Text,
-  detected: Map<string, Term>
-): DocumentFragment | null {
-  const text = textNode.textContent ?? ''
-  const parts = text.split(TERM_REGEX)
-
-  if (parts.length === 1) return null
-
-  const fragment = document.createDocumentFragment()
-  for (const part of parts) {
-    if (!part) continue
-    const term = termService.match(part)
-    if (term) {
-      fragment.appendChild(createHighlightSpan(part, term))
-      detected.set(term.name, term)
-    } else {
-      fragment.appendChild(document.createTextNode(part))
-    }
-  }
-
-  return fragment
-}
-
-export function scan(root: Node = document.body): Term[] {
+function runScan(
+  root: Node,
+  regex: RegExp,
+  lookup: (text: string) => Term | undefined
+): Term[] {
   const walker = createTextWalker(root)
   const replacements: Array<{ node: Text; fragment: DocumentFragment }> = []
   const detected = new Map<string, Term>()
 
   let node: Node | null
   while ((node = walker.nextNode())) {
-    const fragment = replaceTextNode(node as Text, detected)
-    if (fragment) replacements.push({ node: node as Text, fragment })
+    const text = (node as Text).textContent ?? ''
+    const parts = text.split(regex)
+    if (parts.length === 1) continue
+
+    const fragment = document.createDocumentFragment()
+    for (const part of parts) {
+      if (!part) continue
+      const term = lookup(part)
+      if (term) {
+        fragment.appendChild(createHighlightSpan(part, term))
+        detected.set(term.name, term)
+      } else {
+        fragment.appendChild(document.createTextNode(part))
+      }
+    }
+    replacements.push({ node: node as Text, fragment })
   }
 
   // 순회 완료 후 일괄 교체 — 순회 중 DOM 변경 시 TreeWalker 커서 상태가 깨짐
@@ -79,4 +73,20 @@ export function scan(root: Node = document.body): Term[] {
   }
 
   return [...detected.values()]
+}
+
+export function scan(root: Node = document.body): Term[] {
+  return runScan(root, TERM_REGEX, text => termService.match(text))
+}
+
+export function scanWithTerms(terms: Term[], root: Node = document.body): Term[] {
+  const lookup = new Map<string, Term>()
+  for (const term of terms) {
+    lookup.set(term.name.toLowerCase(), term)
+    for (const alias of term.aliases) {
+      lookup.set(alias.toLowerCase(), term)
+    }
+  }
+  const regex = buildRegexFromKeys([...lookup.keys()])
+  return runScan(root, regex, text => lookup.get(text.trim().toLowerCase()))
 }
