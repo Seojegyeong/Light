@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from '@emotion/styled'
 import { color, fontFamily, radius, spacing } from '@/styles/tokens'
 import { useSettings } from '../SettingsContext'
@@ -123,9 +123,58 @@ const ErrorBanner = styled.div`
   line-height: 1.5;
 `
 
+const ApiKeyInput = styled.input`
+  flex: 1;
+  height: 32px;
+  border: 1px solid ${color.neutral200};
+  border-radius: ${radius.sm};
+  padding: 0 ${spacing[2]};
+  font-family: ${fontFamily.base};
+  font-size: 13px;
+  color: ${color.textPrimary};
+  background: #fff;
+  outline: none;
+  &:focus {
+    border-color: ${color.blue500};
+  }
+`
+
+const ApiKeyButton = styled.button`
+  height: 32px;
+  padding: 0 ${spacing[3]};
+  border: none;
+  border-radius: ${radius.sm};
+  background: ${color.blue500};
+  color: #fff;
+  font-family: ${fontFamily.base};
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  flex-shrink: 0;
+  &:hover {
+    opacity: 0.9;
+  }
+`
+
+const ApiKeyRow = styled.div`
+  display: flex;
+  gap: ${spacing[2]};
+  margin-top: ${spacing[2]};
+`
+
+const SavedMessage = styled.span`
+  font-family: ${fontFamily.base};
+  font-size: 12px;
+  color: #27ae60;
+  margin-top: ${spacing[1]};
+  display: block;
+`
+
 // ─── Component ─────────────────────────────────────────────────
 export function SettingsTab(): React.ReactElement {
-  const { settings, setSettings, storageError } = useSettings()
+  const { settings, setSettings, apiKey, setApiKey, storageError } = useSettings()
+  const [inputKey, setInputKey] = useState(apiKey)
+  const [saved, setSaved] = useState(false)
 
   const setEnabled = (v: boolean) =>
     setSettings(prev => ({ ...prev, enabled: v }))
@@ -138,6 +187,12 @@ export function SettingsTab(): React.ReactElement {
 
   const setColor = (hex: string) =>
     setSettings(prev => ({ ...prev, color: hex }))
+
+  const handleSaveApiKey = () => {
+    setApiKey(inputKey.trim())
+    setSaved(true)
+    setTimeout(() => setSaved(false), 2000)
+  }
 
   return (
     <div>
@@ -177,6 +232,20 @@ export function SettingsTab(): React.ReactElement {
             />
           ))}
         </ColorRow>
+      </Section>
+
+      <Section>
+        <SectionLabel>Anthropic API 키</SectionLabel>
+        <ApiKeyRow>
+          <ApiKeyInput
+            type="password"
+            placeholder="sk-ant-..."
+            value={inputKey}
+            onChange={e => setInputKey(e.target.value)}
+          />
+          <ApiKeyButton onClick={handleSaveApiKey}>저장</ApiKeyButton>
+        </ApiKeyRow>
+        {saved && <SavedMessage>저장되었습니다</SavedMessage>}
       </Section>
     </div>
   )
