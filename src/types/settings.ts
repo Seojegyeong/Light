@@ -1,14 +1,12 @@
 import type { TermCategory } from './term'
 
 export interface Settings {
-  enabled: boolean
   categories: Record<TermCategory, boolean>
   color: string
   apiKey?: string
 }
 
 export const DEFAULT_SETTINGS: Settings = {
-  enabled: true,
   categories: {
     주식: true,
     채권: true,

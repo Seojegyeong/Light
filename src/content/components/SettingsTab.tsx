@@ -123,19 +123,42 @@ const ErrorBanner = styled.div`
   line-height: 1.5;
 `
 
-const ApiKeyInput = styled.input`
+const ApiKeyInputWrapper = styled.div`
+  position: relative;
   flex: 1;
+`
+
+const ApiKeyInput = styled.input`
+  width: 100%;
   height: 32px;
   border: 1px solid ${color.neutral200};
   border-radius: ${radius.sm};
-  padding: 0 ${spacing[2]};
+  padding: 0 32px 0 ${spacing[2]};
   font-family: ${fontFamily.base};
   font-size: 13px;
   color: ${color.textPrimary};
   background: #fff;
   outline: none;
+  box-sizing: border-box;
   &:focus {
     border-color: ${color.blue500};
+  }
+`
+
+const EyeButton = styled.button`
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  color: ${color.textCaption};
+  &:hover {
+    color: ${color.textPrimary};
   }
 `
 
@@ -156,28 +179,45 @@ const ApiKeyButton = styled.button`
   }
 `
 
+const ApiKeyLabelRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${spacing[2]};
+  margin-bottom: ${spacing[1]};
+`
+
+const ConnectedBadge = styled.span`
+  font-family: ${fontFamily.base};
+  font-size: 10px;
+  font-weight: 600;
+  color: #27ae60;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #27ae60;
+  }
+`
+
 const ApiKeyRow = styled.div`
   display: flex;
   gap: ${spacing[2]};
   margin-top: ${spacing[2]};
 `
 
-const SavedMessage = styled.span`
-  font-family: ${fontFamily.base};
-  font-size: 12px;
-  color: #27ae60;
-  margin-top: ${spacing[1]};
-  display: block;
-`
-
 // ─── Component ─────────────────────────────────────────────────
 export function SettingsTab(): React.ReactElement {
   const { settings, setSettings, apiKey, setApiKey, storageError } = useSettings()
   const [inputKey, setInputKey] = useState(apiKey)
-  const [saved, setSaved] = useState(false)
+  const [showKey, setShowKey] = useState(false)
 
-  const setEnabled = (v: boolean) =>
-    setSettings(prev => ({ ...prev, enabled: v }))
+  const isSaved = inputKey.trim() === apiKey && apiKey !== ''
 
   const setCategory = (cat: TermCategory, v: boolean) =>
     setSettings(prev => ({
@@ -190,18 +230,41 @@ export function SettingsTab(): React.ReactElement {
 
   const handleSaveApiKey = () => {
     setApiKey(inputKey.trim())
-    setSaved(true)
-    setTimeout(() => setSaved(false), 2000)
   }
 
   return (
     <div>
       {storageError && <ErrorBanner>{storageError}</ErrorBanner>}
       <Section>
-        <Row>
-          <Label>전체 사용</Label>
-          <Toggle on={settings.enabled} onChange={setEnabled} />
-        </Row>
+        <ApiKeyLabelRow>
+          <SectionLabel style={{ margin: 0 }}>Anthropic API 키</SectionLabel>
+          {isSaved && <ConnectedBadge>연동됨</ConnectedBadge>}
+        </ApiKeyLabelRow>
+        <ApiKeyRow>
+          <ApiKeyInputWrapper>
+            <ApiKeyInput
+              type={showKey ? 'text' : 'password'}
+              placeholder="sk-ant-..."
+              value={inputKey}
+              onChange={e => setInputKey(e.target.value)}
+            />
+            <EyeButton type="button" onClick={() => setShowKey(prev => !prev)}>
+              {showKey ? (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+                  <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+                  <line x1="1" y1="1" x2="23" y2="23"/>
+                </svg>
+              ) : (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              )}
+            </EyeButton>
+          </ApiKeyInputWrapper>
+          <ApiKeyButton onClick={handleSaveApiKey}>저장</ApiKeyButton>
+        </ApiKeyRow>
       </Section>
 
       <Section>
@@ -232,20 +295,6 @@ export function SettingsTab(): React.ReactElement {
             />
           ))}
         </ColorRow>
-      </Section>
-
-      <Section>
-        <SectionLabel>Anthropic API 키</SectionLabel>
-        <ApiKeyRow>
-          <ApiKeyInput
-            type="password"
-            placeholder="sk-ant-..."
-            value={inputKey}
-            onChange={e => setInputKey(e.target.value)}
-          />
-          <ApiKeyButton onClick={handleSaveApiKey}>저장</ApiKeyButton>
-        </ApiKeyRow>
-        {saved && <SavedMessage>저장되었습니다</SavedMessage>}
       </Section>
     </div>
   )
