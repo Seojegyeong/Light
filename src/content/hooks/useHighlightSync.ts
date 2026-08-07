@@ -13,21 +13,15 @@ function buildStyles(settings: Settings): string {
   const bg = hexToRgba(settings.color, 0.2)
   const border = settings.color
 
-  const baseRule = settings.enabled
-    ? `[data-light] {
-        background-color: ${bg};
-        border-bottom: 1.5px dashed ${border};
-        border-radius: 2px;
-        padding: 1px 3px;
-        box-decoration-break: clone;
-        -webkit-box-decoration-break: clone;
-        cursor: default;
-      }`
-    : `[data-light] {
-        background-color: transparent;
-        border-bottom: none;
-        cursor: default;
-      }`
+  const baseRule = `[data-light] {
+      background-color: ${bg};
+      border-bottom: 1.5px dashed ${border};
+      border-radius: 2px;
+      padding: 1px 3px;
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+      cursor: default;
+    }`
 
   const categoryRules = Object.entries(settings.categories)
     .filter(([, enabled]) => !enabled)
