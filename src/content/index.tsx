@@ -50,6 +50,7 @@ async function mount(): Promise<void> {
   const builtinDetected = scan()
 
   let aiDetected: Term[] = []
+
   if (apiKey) {
     try {
       const pageText = document.body.innerText
