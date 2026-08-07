@@ -6,6 +6,8 @@ export type TermCategory =
   | '부동산'
   | '회계';
 
+export type TermSource = 'builtin' | 'ai'
+
 export interface Term {
   id: string;
   name: string;
@@ -13,4 +15,5 @@ export interface Term {
   description: string;
   aliases: string[];
   example?: string;
+  source?: TermSource;
 }
