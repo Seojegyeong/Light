@@ -7,9 +7,10 @@ class TermService {
   constructor() {
     this.lookup = new Map();
     for (const term of termsData as Term[]) {
-      this.lookup.set(term.name.toLowerCase(), term);
+      const tagged: Term = { ...term, source: 'builtin' }
+      this.lookup.set(term.name.toLowerCase(), tagged);
       for (const alias of term.aliases) {
-        this.lookup.set(alias.toLowerCase(), term);
+        this.lookup.set(alias.toLowerCase(), tagged);
       }
     }
   }
