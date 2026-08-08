@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styled from '@emotion/styled'
 import { color, fontFamily, radius, spacing } from '@/styles/tokens'
 import { useSettings } from '../SettingsContext'
@@ -211,13 +211,30 @@ const ApiKeyRow = styled.div`
   margin-top: ${spacing[2]};
 `
 
+const AiStatusText = styled.p<{ $scanning: boolean }>`
+  font-family: ${fontFamily.base};
+  font-size: 12px;
+  color: ${p => (p.$scanning ? color.blue500 : '#27ae60')};
+  margin-top: ${spacing[2]};
+`
+
 // ─── Component ─────────────────────────────────────────────────
 export function SettingsTab(): React.ReactElement {
-  const { settings, setSettings, apiKey, setApiKey, storageError } = useSettings()
+  const { settings, setSettings, apiKey, setApiKey, storageError, rescanWithAI, isAiScanning } = useSettings()
   const [inputKey, setInputKey] = useState(apiKey)
   const [showKey, setShowKey] = useState(false)
+  const [scanDone, setScanDone] = useState(false)
 
   const isSaved = inputKey.trim() === apiKey && apiKey !== ''
+  const wasScanning = useRef(false)
+  useEffect(() => {
+    if (isAiScanning) {
+      wasScanning.current = true
+    } else if (wasScanning.current) {
+      wasScanning.current = false
+      setScanDone(true)
+    }
+  }, [isAiScanning])
 
   const setCategory = (cat: TermCategory, v: boolean) =>
     setSettings(prev => ({
@@ -229,7 +246,12 @@ export function SettingsTab(): React.ReactElement {
     setSettings(prev => ({ ...prev, color: hex }))
 
   const handleSaveApiKey = () => {
-    setApiKey(inputKey.trim())
+    const trimmed = inputKey.trim()
+    setApiKey(trimmed)
+    if (trimmed) {
+      setScanDone(false)
+      rescanWithAI(trimmed)
+    }
   }
 
   return (
@@ -246,7 +268,7 @@ export function SettingsTab(): React.ReactElement {
               type={showKey ? 'text' : 'password'}
               placeholder="sk-ant-..."
               value={inputKey}
-              onChange={e => setInputKey(e.target.value)}
+              onChange={e => { setInputKey(e.target.value); setScanDone(false) }}
             />
             <EyeButton type="button" onClick={() => setShowKey(prev => !prev)}>
               {showKey ? (
@@ -263,8 +285,10 @@ export function SettingsTab(): React.ReactElement {
               )}
             </EyeButton>
           </ApiKeyInputWrapper>
-          <ApiKeyButton onClick={handleSaveApiKey}>저장</ApiKeyButton>
+          <ApiKeyButton onClick={handleSaveApiKey} disabled={isAiScanning}>저장</ApiKeyButton>
         </ApiKeyRow>
+        {isAiScanning && <AiStatusText $scanning>AI 분석 중...</AiStatusText>}
+        {!isAiScanning && scanDone && <AiStatusText $scanning={false}>분석 완료</AiStatusText>}
       </Section>
 
       <Section>

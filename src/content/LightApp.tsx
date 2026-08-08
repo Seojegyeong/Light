@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Global, css } from '@emotion/react'
 import type { Term } from '@/types/term'
 import { SettingsContext, useSettings } from './SettingsContext'
@@ -7,6 +7,8 @@ import { FloatingPanel } from './components/FloatingPanel'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { useHighlightSync } from './hooks/useHighlightSync'
 import { useSettingsStorage } from './hooks/useSettingsStorage'
+import { scanWithTerms } from './scanner'
+import { extractTermsWithAI } from '@/services/aiExtractService'
 
 interface Props {
   detectedTerms: Term[]
@@ -33,12 +35,30 @@ function AppInner({ detectedTerms }: Props): React.ReactElement {
   )
 }
 
-export function LightApp({ detectedTerms }: Props): React.ReactElement {
+export function LightApp({ detectedTerms: initialDetectedTerms }: Props): React.ReactElement {
   const { settings, setSettings, apiKey, setApiKey, storageError } = useSettingsStorage()
+  const [detectedTerms, setDetectedTerms] = useState(initialDetectedTerms)
+  const [isAiScanning, setIsAiScanning] = useState(false)
+
+  const rescanWithAI = (key: string) => {
+    if (!key) return
+    setIsAiScanning(true)
+    extractTermsWithAI(document.body.innerText, key)
+      .then(rawAiTerms => {
+        const taggedAiTerms = rawAiTerms.map(t => ({ ...t, source: 'ai' as const }))
+        const newAiDetected = scanWithTerms(taggedAiTerms)
+        setDetectedTerms(prev => [
+          ...prev.filter(t => !t.source || t.source === 'builtin'),
+          ...newAiDetected,
+        ])
+      })
+      .catch(() => {})
+      .finally(() => setIsAiScanning(false))
+  }
 
   return (
     <ErrorBoundary>
-      <SettingsContext.Provider value={{ settings, setSettings, apiKey, setApiKey, detectedTerms, storageError }}>
+      <SettingsContext.Provider value={{ settings, setSettings, apiKey, setApiKey, detectedTerms, storageError, rescanWithAI, isAiScanning }}>
         <AppInner detectedTerms={detectedTerms} />
       </SettingsContext.Provider>
     </ErrorBoundary>

@@ -10,6 +10,8 @@ interface SettingsContextValue {
   setApiKey: (key: string) => void
   detectedTerms: Term[]
   storageError: string | null
+  rescanWithAI: (key: string) => void
+  isAiScanning: boolean
 }
 
 export const SettingsContext = createContext<SettingsContextValue | null>(null)
