@@ -30,7 +30,7 @@ export function TooltipLayer(): React.ReactElement {
       const termKey = span.getAttribute('data-light') ?? ''
       const term = termService.match(termKey)
       if (!term) return
-      if (!settings.enabled || !settings.categories[term.category]) return
+      if (!settings.categories[term.category]) return
 
       clearTimer()
       timerRef.current = setTimeout(() => {
