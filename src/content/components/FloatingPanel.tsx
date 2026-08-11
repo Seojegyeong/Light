@@ -9,6 +9,7 @@ type Tab = 'note' | 'settings'
 
 const BUTTON_SIZE = 50
 const PANEL_WIDTH = 260
+const PANEL_HEIGHT_ESTIMATE = 360
 const PANEL_GAP = 12
 const SCREEN_MARGIN = 8
 
