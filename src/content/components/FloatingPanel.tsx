@@ -3,23 +3,25 @@ import styled from '@emotion/styled'
 import { color, fontFamily, radius, shadow, spacing } from '@/styles/tokens'
 import { NoteTab } from './NoteTab'
 import { SettingsTab } from './SettingsTab'
+import { useDragPosition } from '../hooks/useDragPosition'
 
 type Tab = 'note' | 'settings'
 
+const BUTTON_SIZE = 50
 const PANEL_WIDTH = 260
-const BOTTOM_MARGIN = 24
-const RIGHT_MARGIN = 24
+const PANEL_HEIGHT_ESTIMATE = 360
+const PANEL_GAP = 12
+const SCREEN_MARGIN = 8
 
-const FloatButton = styled.button<{ $disabled: boolean }>`
+const FloatButton = styled.button<{ $dragging: boolean }>`
   position: fixed;
-  bottom: ${BOTTOM_MARGIN}px;
-  right: ${RIGHT_MARGIN}px;
-  width: 50px;
-  height: 50px;
+  width: ${BUTTON_SIZE}px;
+  height: ${BUTTON_SIZE}px;
   border-radius: ${radius.full};
   background: ${color.blue500};
   border: none;
-  cursor: ${p => (p.$disabled ? 'not-allowed' : 'pointer')};
+  cursor: ${p => (p.$dragging ? 'grabbing' : 'grab')};
+  user-select: none;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -29,19 +31,16 @@ const FloatButton = styled.button<{ $disabled: boolean }>`
   font-weight: 700;
   color: #fff;
   z-index: 2147483646;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.2s ease;
-  opacity: ${p => (p.$disabled ? 0.4 : 1)};
+  transition: ${p => (p.$dragging ? 'none' : 'transform 0.15s ease, box-shadow 0.15s ease')};
 
   &:hover {
-    transform: ${p => (p.$disabled ? 'none' : 'scale(1.06)')};
-    box-shadow: ${p => (p.$disabled ? '0 4px 12px rgba(23, 121, 225, 0.4)' : '0 6px 16px rgba(23, 121, 225, 0.5)')};
+    transform: ${p => (p.$dragging ? 'none' : 'scale(1.06)')};
+    box-shadow: ${p => (p.$dragging ? '0 4px 12px rgba(23, 121, 225, 0.4)' : '0 6px 16px rgba(23, 121, 225, 0.5)')};
   }
 `
 
 const Panel = styled.div`
   position: fixed;
-  bottom: ${BOTTOM_MARGIN + 50 + 12}px;
-  right: ${RIGHT_MARGIN}px;
   width: ${PANEL_WIDTH}px;
   background: #fff;
   border-radius: ${radius.md};
@@ -86,11 +85,21 @@ interface Props {
 export function FloatingPanel({ detectedCount }: Props): React.ReactElement {
   const [isOpen, setIsOpen] = useState(false)
   const [activeTab, setActiveTab] = useState<Tab>('note')
+  const { pos, isDragging, hasMoved, onMouseDown } = useDragPosition()
+
+  const openAbove = pos.y > PANEL_HEIGHT_ESTIMATE + PANEL_GAP
+  const panelLeft = Math.max(
+    SCREEN_MARGIN,
+    Math.min(window.innerWidth - PANEL_WIDTH - SCREEN_MARGIN, pos.x + BUTTON_SIZE - PANEL_WIDTH)
+  )
+  const panelStyle = openAbove
+    ? { bottom: window.innerHeight - pos.y + PANEL_GAP, left: panelLeft }
+    : { top: pos.y + BUTTON_SIZE + PANEL_GAP, left: panelLeft }
 
   return (
     <>
       {isOpen && (
-        <Panel>
+        <Panel style={panelStyle}>
           <TabHeader>
             <TabButton
               $active={activeTab === 'note'}
@@ -111,9 +120,11 @@ export function FloatingPanel({ detectedCount }: Props): React.ReactElement {
         </Panel>
       )}
       <FloatButton
-        $disabled={detectedCount === 0}
+        $dragging={isDragging}
+        style={{ top: pos.y, left: pos.x }}
+        onMouseDown={onMouseDown}
         onClick={() => {
-          if (detectedCount === 0) return
+          if (hasMoved.current) return
           setIsOpen(prev => !prev)
         }}
       >
