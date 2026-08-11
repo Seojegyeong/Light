@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styled from '@emotion/styled'
 import { color, fontFamily, radius, spacing } from '@/styles/tokens'
-import { useSettings } from '../SettingsContext'
+import { useSettings } from '../context/SettingsContext'
 import type { TermCategory } from '@/types/term'
 
 const CATEGORIES: TermCategory[] = ['주식', '채권', '거시경제', '파생상품', '부동산', '회계']
@@ -123,21 +123,45 @@ const ErrorBanner = styled.div`
   line-height: 1.5;
 `
 
-const ApiKeyInput = styled.input`
+const ApiKeyInputWrapper = styled.div`
+  position: relative;
   flex: 1;
+`
+
+const ApiKeyInput = styled.input`
+  width: 100%;
   height: 32px;
   border: 1px solid ${color.neutral200};
   border-radius: ${radius.sm};
-  padding: 0 ${spacing[2]};
+  padding: 0 32px 0 ${spacing[2]};
   font-family: ${fontFamily.base};
   font-size: 13px;
   color: ${color.textPrimary};
   background: #fff;
   outline: none;
+  box-sizing: border-box;
   &:focus {
     border-color: ${color.blue500};
   }
 `
+
+const EyeButton = styled.button`
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  color: ${color.textCaption};
+  &:hover {
+    color: ${color.textPrimary};
+  }
+`
+
 
 const ApiKeyButton = styled.button`
   height: 32px;
@@ -156,28 +180,63 @@ const ApiKeyButton = styled.button`
   }
 `
 
+const ApiKeyLabelRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${spacing[2]};
+  margin-bottom: ${spacing[1]};
+`
+
+const ConnectedBadge = styled.span`
+  font-family: ${fontFamily.base};
+  font-size: 10px;
+  font-weight: 600;
+  color: #27ae60;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #27ae60;
+  }
+`
+
+
 const ApiKeyRow = styled.div`
   display: flex;
   gap: ${spacing[2]};
   margin-top: ${spacing[2]};
 `
 
-const SavedMessage = styled.span`
+const AiStatusText = styled.p<{ $scanning: boolean }>`
   font-family: ${fontFamily.base};
   font-size: 12px;
-  color: #27ae60;
-  margin-top: ${spacing[1]};
-  display: block;
+  color: ${p => (p.$scanning ? color.blue500 : '#27ae60')};
+  margin-top: ${spacing[2]};
 `
 
 // ─── Component ─────────────────────────────────────────────────
 export function SettingsTab(): React.ReactElement {
-  const { settings, setSettings, apiKey, setApiKey, storageError } = useSettings()
+  const { settings, setSettings, apiKey, setApiKey, storageError, rescanWithAI, isAiScanning } = useSettings()
   const [inputKey, setInputKey] = useState(apiKey)
-  const [saved, setSaved] = useState(false)
+  const [showKey, setShowKey] = useState(false)
+  const [scanDone, setScanDone] = useState(false)
 
-  const setEnabled = (v: boolean) =>
-    setSettings(prev => ({ ...prev, enabled: v }))
+  const isSaved = inputKey.trim() === apiKey && apiKey !== ''
+  const wasScanning = useRef(false)
+  useEffect(() => {
+    if (isAiScanning) {
+      wasScanning.current = true
+    } else if (wasScanning.current) {
+      wasScanning.current = false
+      setScanDone(true)
+    }
+  }, [isAiScanning])
 
   const setCategory = (cat: TermCategory, v: boolean) =>
     setSettings(prev => ({
@@ -189,19 +248,49 @@ export function SettingsTab(): React.ReactElement {
     setSettings(prev => ({ ...prev, color: hex }))
 
   const handleSaveApiKey = () => {
-    setApiKey(inputKey.trim())
-    setSaved(true)
-    setTimeout(() => setSaved(false), 2000)
+    const trimmed = inputKey.trim()
+    setApiKey(trimmed)
+    if (trimmed) {
+      setScanDone(false)
+      rescanWithAI(trimmed)
+    }
   }
 
   return (
     <div>
       {storageError && <ErrorBanner>{storageError}</ErrorBanner>}
       <Section>
-        <Row>
-          <Label>전체 사용</Label>
-          <Toggle on={settings.enabled} onChange={setEnabled} />
-        </Row>
+        <ApiKeyLabelRow>
+          <SectionLabel style={{ margin: 0 }}>Anthropic API 키</SectionLabel>
+          {isSaved && <ConnectedBadge>연동됨</ConnectedBadge>}
+        </ApiKeyLabelRow>
+        <ApiKeyRow>
+          <ApiKeyInputWrapper>
+            <ApiKeyInput
+              type={showKey ? 'text' : 'password'}
+              placeholder="sk-ant-..."
+              value={inputKey}
+              onChange={e => { setInputKey(e.target.value); setScanDone(false) }}
+            />
+            <EyeButton type="button" onClick={() => setShowKey(prev => !prev)}>
+              {showKey ? (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+                  <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+                  <line x1="1" y1="1" x2="23" y2="23"/>
+                </svg>
+              ) : (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              )}
+            </EyeButton>
+          </ApiKeyInputWrapper>
+          <ApiKeyButton onClick={handleSaveApiKey} disabled={isAiScanning}>저장</ApiKeyButton>
+        </ApiKeyRow>
+        {isAiScanning && <AiStatusText $scanning>AI 분석 중...</AiStatusText>}
+        {!isAiScanning && scanDone && <AiStatusText $scanning={false}>분석 완료</AiStatusText>}
       </Section>
 
       <Section>
@@ -234,19 +323,6 @@ export function SettingsTab(): React.ReactElement {
         </ColorRow>
       </Section>
 
-      <Section>
-        <SectionLabel>Anthropic API 키</SectionLabel>
-        <ApiKeyRow>
-          <ApiKeyInput
-            type="password"
-            placeholder="sk-ant-..."
-            value={inputKey}
-            onChange={e => setInputKey(e.target.value)}
-          />
-          <ApiKeyButton onClick={handleSaveApiKey}>저장</ApiKeyButton>
-        </ApiKeyRow>
-        {saved && <SavedMessage>저장되었습니다</SavedMessage>}
-      </Section>
     </div>
   )
 }

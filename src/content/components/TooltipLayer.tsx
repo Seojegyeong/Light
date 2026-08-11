@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react'
 import type { Term } from '@/types/term'
 import { termService } from '@/services/termService'
 import { TermTooltip } from './TermTooltip'
-import { useSettings } from '../SettingsContext'
+import { useSettings } from '../context/SettingsContext'
 
 interface TooltipState {
   term: Term
@@ -30,7 +30,7 @@ export function TooltipLayer(): React.ReactElement {
       const termKey = span.getAttribute('data-light') ?? ''
       const term = termService.match(termKey)
       if (!term) return
-      if (!settings.enabled || !settings.categories[term.category]) return
+      if (!settings.categories[term.category]) return
 
       clearTimer()
       timerRef.current = setTimeout(() => {

@@ -2,10 +2,11 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import createCache from '@emotion/cache'
 import { CacheProvider } from '@emotion/react'
-import { scan, scanWithTerms } from './scanner'
+import { scan, scanWithTerms } from './utils/scanner'
 import { LightApp } from './LightApp'
 import { DEFAULT_SETTINGS } from '@/types/settings'
 import { extractTermsWithAI } from '@/services/aiExtractService'
+import type { Term } from '@/types/term'
 
 function injectHighlightStyles(): void {
   if (document.getElementById('light-styles')) return
@@ -24,6 +25,13 @@ function injectHighlightStyles(): void {
       box-decoration-break: clone;
       -webkit-box-decoration-break: clone;
       cursor: default;
+    }
+    @keyframes light-flash {
+      0%, 100% { background-color: rgba(${r}, ${g}, ${b}, 0.2); }
+      50%       { background-color: rgba(${r}, ${g}, ${b}, 0.55); outline: 2px solid rgba(${r}, ${g}, ${b}, 0.5); }
+    }
+    .light-flash {
+      animation: light-flash 0.9s ease-in-out;
     }
   `
   document.head.appendChild(style)
@@ -46,17 +54,22 @@ async function mount(): Promise<void> {
 
   const { light_api_key: apiKey } = await chrome.storage.local.get('light_api_key') as { light_api_key?: string }
 
-  let detectedTerms = scan()
+  const builtinDetected = scan()
+
+  let aiDetected: Term[] = []
 
   if (apiKey) {
     try {
       const pageText = document.body.innerText
-      const aiTerms = await extractTermsWithAI(pageText, apiKey)
-      detectedTerms = scanWithTerms(aiTerms)
+      const rawAiTerms = await extractTermsWithAI(pageText, apiKey)
+      const taggedAiTerms = rawAiTerms.map(t => ({ ...t, source: 'ai' as const }))
+      aiDetected = scanWithTerms(taggedAiTerms)
     } catch {
-      // AI 추출 실패 시 terms.json 결과 유지
+      // AI 추출 실패 시 무시
     }
   }
+
+  const detectedTerms = [...builtinDetected, ...aiDetected]
 
   ReactDOM.createRoot(mountPoint).render(
     <React.StrictMode>

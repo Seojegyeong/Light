@@ -1,7 +1,8 @@
 import React from 'react'
 import styled from '@emotion/styled'
 import { color, fontFamily, spacing } from '@/styles/tokens'
-import { useSettings } from '../SettingsContext'
+import { useSettings } from '../context/SettingsContext'
+import { scrollToTerm } from '../utils/scrollToTerm'
 
 const Header = styled.div`
   display: flex;
@@ -25,6 +26,22 @@ const EmptyText = styled.p`
   padding: ${spacing[4]} 0;
 `
 
+const Section = styled.div`
+  & + & {
+    margin-top: ${spacing[3]};
+    padding-top: ${spacing[3]};
+    border-top: 1px solid ${color.neutral100};
+  }
+`
+
+const SectionLabel = styled.div`
+  font-family: ${fontFamily.base};
+  font-size: 11px;
+  font-weight: 600;
+  color: ${color.textCaption};
+  margin-bottom: ${spacing[1]};
+`
+
 const List = styled.ul`
   list-style: none;
   display: flex;
@@ -38,6 +55,15 @@ const ListItem = styled.li`
   justify-content: space-between;
   padding: ${spacing[2]} 0;
   border-bottom: 1px solid ${color.neutral100};
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.12s ease;
+
+  &:hover {
+    background: ${color.neutral100};
+    padding-left: ${spacing[1]};
+    padding-right: ${spacing[1]};
+  }
 
   &:last-child {
     border-bottom: none;
@@ -66,22 +92,45 @@ const CategoryBadge = styled.span<{ $cat: keyof typeof color.category }>`
 export function NoteTab(): React.ReactElement {
   const { detectedTerms } = useSettings()
 
+  const builtinTerms = detectedTerms.filter(t => !t.source || t.source === 'builtin')
+  const aiTerms = detectedTerms.filter(t => t.source === 'ai')
+
   return (
     <div>
       <Header>
-        <HeaderLabel>저장된 키워드 · {detectedTerms.length}</HeaderLabel>
+        <HeaderLabel>감지된 키워드 · {detectedTerms.length}</HeaderLabel>
       </Header>
       {detectedTerms.length === 0 ? (
-        <EmptyText>감지된 키워드가 없습니다.</EmptyText>
+        <EmptyText>이 페이지에서 감지된 용어가 없습니다.</EmptyText>
       ) : (
-        <List>
-          {detectedTerms.map(term => (
-            <ListItem key={term.id}>
-              <TermName>{term.name}</TermName>
-              <CategoryBadge $cat={term.category}>{term.category}</CategoryBadge>
-            </ListItem>
-          ))}
-        </List>
+        <>
+          {builtinTerms.length > 0 && (
+            <Section>
+              <SectionLabel>기본 용어 · {builtinTerms.length}</SectionLabel>
+              <List>
+                {builtinTerms.map(term => (
+                  <ListItem key={term.id} onClick={() => scrollToTerm(term.name)}>
+                    <TermName>{term.name}</TermName>
+                    <CategoryBadge $cat={term.category}>{term.category}</CategoryBadge>
+                  </ListItem>
+                ))}
+              </List>
+            </Section>
+          )}
+          {aiTerms.length > 0 && (
+            <Section>
+              <SectionLabel>AI 분석 · {aiTerms.length}</SectionLabel>
+              <List>
+                {aiTerms.map(term => (
+                  <ListItem key={term.id} onClick={() => scrollToTerm(term.name)}>
+                    <TermName>{term.name}</TermName>
+                    <CategoryBadge $cat={term.category}>{term.category}</CategoryBadge>
+                  </ListItem>
+                ))}
+              </List>
+            </Section>
+          )}
+        </>
       )}
     </div>
   )
