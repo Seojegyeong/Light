@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from '@emotion/styled'
 import { color, fontFamily, spacing } from '@/styles/tokens'
-import { useSettings } from '../SettingsContext'
+import { useSettings } from '../context/SettingsContext'
 
 const Header = styled.div`
   display: flex;
