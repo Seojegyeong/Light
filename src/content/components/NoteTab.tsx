@@ -91,7 +91,7 @@ export function NoteTab(): React.ReactElement {
         <HeaderLabel>감지된 키워드 · {detectedTerms.length}</HeaderLabel>
       </Header>
       {detectedTerms.length === 0 ? (
-        <EmptyText>감지된 키워드가 없습니다.</EmptyText>
+        <EmptyText>이 페이지에서 감지된 용어가 없습니다.</EmptyText>
       ) : (
         <>
           {builtinTerms.length > 0 && (
