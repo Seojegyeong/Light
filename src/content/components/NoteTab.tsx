@@ -2,6 +2,7 @@ import React from 'react'
 import styled from '@emotion/styled'
 import { color, fontFamily, spacing } from '@/styles/tokens'
 import { useSettings } from '../context/SettingsContext'
+import { scrollToTerm } from '../utils/scrollToTerm'
 
 const Header = styled.div`
   display: flex;
@@ -54,6 +55,15 @@ const ListItem = styled.li`
   justify-content: space-between;
   padding: ${spacing[2]} 0;
   border-bottom: 1px solid ${color.neutral100};
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.12s ease;
+
+  &:hover {
+    background: ${color.neutral100};
+    padding-left: ${spacing[1]};
+    padding-right: ${spacing[1]};
+  }
 
   &:last-child {
     border-bottom: none;
@@ -99,7 +109,7 @@ export function NoteTab(): React.ReactElement {
               <SectionLabel>기본 용어 · {builtinTerms.length}</SectionLabel>
               <List>
                 {builtinTerms.map(term => (
-                  <ListItem key={term.id}>
+                  <ListItem key={term.id} onClick={() => scrollToTerm(term.name)}>
                     <TermName>{term.name}</TermName>
                     <CategoryBadge $cat={term.category}>{term.category}</CategoryBadge>
                   </ListItem>
@@ -112,7 +122,7 @@ export function NoteTab(): React.ReactElement {
               <SectionLabel>AI 분석 · {aiTerms.length}</SectionLabel>
               <List>
                 {aiTerms.map(term => (
-                  <ListItem key={term.id}>
+                  <ListItem key={term.id} onClick={() => scrollToTerm(term.name)}>
                     <TermName>{term.name}</TermName>
                     <CategoryBadge $cat={term.category}>{term.category}</CategoryBadge>
                   </ListItem>

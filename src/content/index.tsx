@@ -26,6 +26,13 @@ function injectHighlightStyles(): void {
       -webkit-box-decoration-break: clone;
       cursor: default;
     }
+    @keyframes light-flash {
+      0%, 100% { background-color: rgba(${r}, ${g}, ${b}, 0.2); }
+      50%       { background-color: rgba(${r}, ${g}, ${b}, 0.55); outline: 2px solid rgba(${r}, ${g}, ${b}, 0.5); }
+    }
+    .light-flash {
+      animation: light-flash 0.9s ease-in-out;
+    }
   `
   document.head.appendChild(style)
 }
