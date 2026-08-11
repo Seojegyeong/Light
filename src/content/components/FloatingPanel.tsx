@@ -9,7 +9,6 @@ type Tab = 'note' | 'settings'
 
 const BUTTON_SIZE = 50
 const PANEL_WIDTH = 260
-const PANEL_HEIGHT_ESTIMATE = 400
 const PANEL_GAP = 12
 const SCREEN_MARGIN = 8
 
@@ -88,18 +87,18 @@ export function FloatingPanel({ detectedCount }: Props): React.ReactElement {
   const { pos, isDragging, hasMoved, onMouseDown } = useDragPosition()
 
   const openAbove = pos.y > PANEL_HEIGHT_ESTIMATE + PANEL_GAP
-  const panelTop = openAbove
-    ? Math.max(SCREEN_MARGIN, pos.y - PANEL_HEIGHT_ESTIMATE - PANEL_GAP)
-    : pos.y + BUTTON_SIZE + PANEL_GAP
   const panelLeft = Math.max(
     SCREEN_MARGIN,
     Math.min(window.innerWidth - PANEL_WIDTH - SCREEN_MARGIN, pos.x + BUTTON_SIZE - PANEL_WIDTH)
   )
+  const panelStyle = openAbove
+    ? { bottom: window.innerHeight - pos.y + PANEL_GAP, left: panelLeft }
+    : { top: pos.y + BUTTON_SIZE + PANEL_GAP, left: panelLeft }
 
   return (
     <>
       {isOpen && (
-        <Panel style={{ top: panelTop, left: panelLeft }}>
+        <Panel style={panelStyle}>
           <TabHeader>
             <TabButton
               $active={activeTab === 'note'}
