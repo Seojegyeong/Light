@@ -10,7 +10,7 @@ const PANEL_WIDTH = 260
 const BOTTOM_MARGIN = 24
 const RIGHT_MARGIN = 24
 
-const FloatButton = styled.button`
+const FloatButton = styled.button<{ $disabled: boolean }>`
   position: fixed;
   bottom: ${BOTTOM_MARGIN}px;
   right: ${RIGHT_MARGIN}px;
@@ -19,7 +19,7 @@ const FloatButton = styled.button`
   border-radius: ${radius.full};
   background: ${color.blue500};
   border: none;
-  cursor: pointer;
+  cursor: ${p => (p.$disabled ? 'not-allowed' : 'pointer')};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -29,11 +29,12 @@ const FloatButton = styled.button`
   font-weight: 700;
   color: #fff;
   z-index: 2147483646;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.2s ease;
+  opacity: ${p => (p.$disabled ? 0.4 : 1)};
 
   &:hover {
-    transform: scale(1.06);
-    box-shadow: 0 6px 16px rgba(23, 121, 225, 0.5);
+    transform: ${p => (p.$disabled ? 'none' : 'scale(1.06)')};
+    box-shadow: ${p => (p.$disabled ? '0 4px 12px rgba(23, 121, 225, 0.4)' : '0 6px 16px rgba(23, 121, 225, 0.5)')};
   }
 `
 
@@ -109,7 +110,13 @@ export function FloatingPanel({ detectedCount }: Props): React.ReactElement {
           </TabContent>
         </Panel>
       )}
-      <FloatButton onClick={() => setIsOpen(prev => !prev)}>
+      <FloatButton
+        $disabled={detectedCount === 0}
+        onClick={() => {
+          if (detectedCount === 0) return
+          setIsOpen(prev => !prev)
+        }}
+      >
         {detectedCount}
       </FloatButton>
     </>
