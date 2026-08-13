@@ -2,6 +2,9 @@
 
 <img width="1280" height=auto alt="main_1" src="https://github.com/user-attachments/assets/b716c4e9-2c1e-4926-a1b7-612f279ce9bd" />
 
+![version](https://img.shields.io/badge/version-0.3.0-blue)
+![Claude](https://img.shields.io/badge/Claude-Haiku%204.5-orange)
+
 </div>
 
 <br>
@@ -31,6 +34,21 @@ light는 이런 불편을 줄이기 위해 만들어졌어요.
 
 <br>
 
+## 🤖 Claude AI 연동
+
+light는 두 가지 모드로 동작합니다.
+
+| 모드 | 동작 | 필요한 것 |
+|------|------|-----------|
+| **체험 모드** | 내장 용어 사전으로 하이라이트 | 없음 |
+| **풀 기능 모드** | Claude AI가 기사 맥락에 맞게 용어를 실시간 추출·설명 | Claude API 키 |
+
+팝업에서 Claude API 키를 입력하면 풀 기능 모드로 전환됩니다.
+
+> API 키와 기사 텍스트는 [light-server](https://github.com/Seojegyeong/Light-Server)를 통해 Claude API로 전달됩니다. 서버에 저장되지 않습니다.
+
+<br>
+
 ## 🚀 Install
 
 아래 링크에서 바로 설치하세요.
@@ -41,8 +59,10 @@ light는 이런 불편을 줄이기 위해 만들어졌어요.
 
 ## 🔒 Privacy
 
-light는 광고 없이, 수집하는 개인정보 없이 작동합니다.<br>
-사용자 설정값만 Chrome에 저장되며, 외부 서버로는 아무것도 전송되지 않습니다.
+light는 광고 없이, 수집하는 개인정보 없이 작동합니다.
+
+- **체험 모드**: 기사 텍스트를 포함한 어떤 데이터도 외부로 전송되지 않습니다.
+- **풀 기능 모드**: 기사 텍스트와 Claude API 키가 light-server → Claude API로 전달됩니다. 서버에 저장되지 않습니다.
 
 개인정보처리방침: https://seojegyeong.github.io/Light/privacy-policy.html
 
