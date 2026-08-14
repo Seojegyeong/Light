@@ -45,7 +45,7 @@ export function LightApp({ detectedTerms: initialDetectedTerms }: Props): React.
     setIsAiScanning(true)
     extractTermsWithAI(document.body.innerText, key)
       .then(rawAiTerms => {
-        const taggedAiTerms = rawAiTerms.map(t => ({ ...t, source: 'ai' as const }))
+        const taggedAiTerms = rawAiTerms.map(t => ({ ...t, id: t.id ?? t.name, aliases: t.aliases ?? [], source: 'ai' as const }))
         const newAiDetected = scanWithTerms(taggedAiTerms)
         setDetectedTerms(prev => [
           ...prev.filter(t => !t.source || t.source === 'builtin'),

@@ -9,9 +9,9 @@ export type TermCategory =
 export type TermSource = 'builtin' | 'ai'
 
 export interface Term {
-  id: string;
+  id?: string;
   name: string;
-  category: TermCategory;
+  category?: TermCategory;
   description: string;
   aliases: string[];
   example?: string;
