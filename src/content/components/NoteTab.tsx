@@ -109,9 +109,9 @@ export function NoteTab(): React.ReactElement {
               <SectionLabel>기본 용어 · {builtinTerms.length}</SectionLabel>
               <List>
                 {builtinTerms.map(term => (
-                  <ListItem key={term.id} onClick={() => scrollToTerm(term.name)}>
+                  <ListItem key={term.id ?? term.name} onClick={() => scrollToTerm(term.name)}>
                     <TermName>{term.name}</TermName>
-                    <CategoryBadge $cat={term.category}>{term.category}</CategoryBadge>
+                    {term.category && <CategoryBadge $cat={term.category}>{term.category}</CategoryBadge>}
                   </ListItem>
                 ))}
               </List>
@@ -122,9 +122,9 @@ export function NoteTab(): React.ReactElement {
               <SectionLabel>AI 분석 · {aiTerms.length}</SectionLabel>
               <List>
                 {aiTerms.map(term => (
-                  <ListItem key={term.id} onClick={() => scrollToTerm(term.name)}>
+                  <ListItem key={term.id ?? term.name} onClick={() => scrollToTerm(term.name)}>
                     <TermName>{term.name}</TermName>
-                    <CategoryBadge $cat={term.category}>{term.category}</CategoryBadge>
+                    {term.category && <CategoryBadge $cat={term.category}>{term.category}</CategoryBadge>}
                   </ListItem>
                 ))}
               </List>
