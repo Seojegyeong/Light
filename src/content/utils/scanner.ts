@@ -83,7 +83,7 @@ export function scanWithTerms(terms: Term[], root: Node = document.body): Term[]
   const lookup = new Map<string, Term>()
   for (const term of terms) {
     lookup.set(term.name.toLowerCase(), term)
-    for (const alias of term.aliases) {
+    for (const alias of term.aliases ?? []) {
       lookup.set(alias.toLowerCase(), term)
     }
   }

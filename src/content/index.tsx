@@ -62,7 +62,7 @@ async function mount(): Promise<void> {
     try {
       const pageText = document.body.innerText
       const rawAiTerms = await extractTermsWithAI(pageText, apiKey)
-      const taggedAiTerms = rawAiTerms.map(t => ({ ...t, source: 'ai' as const }))
+      const taggedAiTerms = rawAiTerms.map(t => ({ ...t, id: t.id ?? t.name, aliases: t.aliases ?? [], source: 'ai' as const }))
       aiDetected = scanWithTerms(taggedAiTerms)
     } catch {
       // AI 추출 실패 시 무시

@@ -146,7 +146,7 @@ export function TermTooltip({ term, anchorRect }: Props): React.ReactElement {
       <Caret $x={pos.caretX} $flipped={pos.flipped} />
       <Header>
         <TermName>{term.name}</TermName>
-        <CategoryBadge $cat={term.category}>{term.category}</CategoryBadge>
+        {term.category && <CategoryBadge $cat={term.category}>{term.category}</CategoryBadge>}
       </Header>
       <Description>{term.description}</Description>
       {term.example && (
