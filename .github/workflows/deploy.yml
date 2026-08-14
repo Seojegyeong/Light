@@ -29,6 +29,9 @@ jobs:
       - name: Zip extension
         run: cd dist && zip -r ../extension.zip .
 
+      - name: Verify zip contents
+        run: unzip -l extension.zip | head -20
+
       - name: Upload to Chrome Web Store
         uses: mnao305/chrome-extension-upload@v5.0.0
         with:
