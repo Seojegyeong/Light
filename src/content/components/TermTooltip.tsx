@@ -30,6 +30,7 @@ const Wrapper = styled.div`
   border-radius: ${radius.sm};
   box-shadow: 0 4px 20px rgba(20, 30, 60, 0.16);
   transition: opacity 0.12s ease;
+  text-align: left;
 `
 
 const Caret = styled.div<{ $x: number; $flipped: boolean }>`

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import type { Term } from '@/types/term'
 import { termService } from '@/services/termService'
 import { TermTooltip } from './TermTooltip'
@@ -10,9 +10,21 @@ interface TooltipState {
 }
 
 export function TooltipLayer(): React.ReactElement {
-  const { settings } = useSettings()
+  const { settings, detectedTerms } = useSettings()
   const [tooltip, setTooltip] = useState<TooltipState | null>(null)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const aiTermLookup = useMemo(() => {
+    const map = new Map<string, Term>()
+    for (const term of detectedTerms) {
+      if (term.source !== 'ai') continue
+      map.set(term.name.toLowerCase(), term)
+      for (const alias of term.aliases ?? []) {
+        map.set(alias.toLowerCase(), term)
+      }
+    }
+    return map
+  }, [detectedTerms])
 
   const clearTimer = useCallback(() => {
     if (timerRef.current) {
@@ -28,7 +40,7 @@ export function TooltipLayer(): React.ReactElement {
       if (!span) return
 
       const termKey = span.getAttribute('data-light') ?? ''
-      const term = termService.match(termKey)
+      const term = termService.match(termKey) ?? aiTermLookup.get(termKey.toLowerCase())
       if (!term) return
       if (term.category && !settings.categories[term.category]) return
 
@@ -37,7 +49,7 @@ export function TooltipLayer(): React.ReactElement {
         setTooltip({ term, anchorRect: span.getBoundingClientRect() })
       }, 150)
     },
-    [clearTimer, settings]
+    [clearTimer, settings, aiTermLookup]
   )
 
   const handleMouseOut = useCallback(
