@@ -27,7 +27,7 @@ jobs:
         run: pnpm build
 
       - name: Zip extension
-        run: zip -r extension.zip dist/
+        run: cd dist && zip -r ../extension.zip .
 
       - name: Upload to Chrome Web Store
         uses: mnao305/chrome-extension-upload@v5.0.0
