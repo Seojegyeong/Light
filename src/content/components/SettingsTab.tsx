@@ -162,6 +162,7 @@ const EyeButton = styled.button`
   }
 `
 
+
 const ApiKeyButton = styled.button`
   height: 32px;
   padding: 0 ${spacing[3]};
@@ -204,6 +205,7 @@ const ConnectedBadge = styled.span`
     background: #27ae60;
   }
 `
+
 
 const ApiKeyRow = styled.div`
   display: flex;
@@ -320,6 +322,7 @@ export function SettingsTab(): React.ReactElement {
           ))}
         </ColorRow>
       </Section>
+
     </div>
   )
 }
