@@ -38,7 +38,7 @@ light는 이런 불편을 줄이기 위해 만들어졌어요.
 
 <div align="center">
 
-[![Watch Demo](https://img.shields.io/badge/▶-Watch%20Demo-red?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/Zzk-4s1peDs)
+[![Watch Demo](https://img.shields.io/badge/▶-Watch%20Demo-red?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/P0sHsM-qLWU)
 
 <sub>▶️ 클릭하면 시연 영상을 볼 수 있습니다</sub>
 
