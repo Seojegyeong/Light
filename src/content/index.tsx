@@ -85,3 +85,13 @@ if (document.readyState === 'loading') {
 } else {
   void mount()
 }
+
+if (import.meta.env.DEV) {
+  Promise.all([
+    import('web-vitals').then(({ onLCP, onCLS, onINP }) => {
+      onLCP(metric => console.debug(`[Light] LCP: ${metric.value.toFixed(0)}ms`))
+      onCLS(metric => console.debug(`[Light] CLS: ${metric.value.toFixed(4)}`))
+      onINP(metric => console.debug(`[Light] INP: ${metric.value.toFixed(0)}ms`))
+    }),
+  ])
+}
