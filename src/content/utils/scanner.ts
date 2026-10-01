@@ -76,7 +76,7 @@ function runScan(
 }
 
 export function scan(root: Node = document.body): Term[] {
-  if (process.env.NODE_ENV !== 'development') {
+  if (!import.meta.env.DEV) {
     return runScan(root, TERM_REGEX, text => termService.match(text))
   }
   performance.mark('light:scan:start')
@@ -98,7 +98,7 @@ export function scanWithTerms(terms: Term[], root: Node = document.body): Term[]
   if (lookup.size === 0) return []
   const regex = buildRegexFromKeys([...lookup.keys()])
 
-  if (process.env.NODE_ENV !== 'development') {
+  if (!import.meta.env.DEV) {
     return runScan(root, regex, text => lookup.get(text.trim().toLowerCase()))
   }
   performance.mark('light:scanWithTerms:start')
