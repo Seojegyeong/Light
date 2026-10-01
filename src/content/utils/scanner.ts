@@ -76,7 +76,15 @@ function runScan(
 }
 
 export function scan(root: Node = document.body): Term[] {
-  return runScan(root, TERM_REGEX, text => termService.match(text))
+  if (!import.meta.env.DEV) {
+    return runScan(root, TERM_REGEX, text => termService.match(text))
+  }
+  performance.mark('light:scan:start')
+  const result = runScan(root, TERM_REGEX, text => termService.match(text))
+  performance.mark('light:scan:end')
+  const measure = performance.measure('light:scan', 'light:scan:start', 'light:scan:end')
+  console.debug(`[Light] scan() — ${measure.duration.toFixed(2)}ms, ${result.length}개 용어 감지`)
+  return result
 }
 
 export function scanWithTerms(terms: Term[], root: Node = document.body): Term[] {
@@ -87,6 +95,16 @@ export function scanWithTerms(terms: Term[], root: Node = document.body): Term[]
       lookup.set(alias.toLowerCase(), term)
     }
   }
+  if (lookup.size === 0) return []
   const regex = buildRegexFromKeys([...lookup.keys()])
-  return runScan(root, regex, text => lookup.get(text.trim().toLowerCase()))
+
+  if (!import.meta.env.DEV) {
+    return runScan(root, regex, text => lookup.get(text.trim().toLowerCase()))
+  }
+  performance.mark('light:scanWithTerms:start')
+  const result = runScan(root, regex, text => lookup.get(text.trim().toLowerCase()))
+  performance.mark('light:scanWithTerms:end')
+  const measure = performance.measure('light:scanWithTerms', 'light:scanWithTerms:start', 'light:scanWithTerms:end')
+  console.debug(`[Light] scanWithTerms() — ${measure.duration.toFixed(2)}ms, ${result.length}개 용어 감지`)
+  return result
 }
