@@ -1,10 +1,10 @@
 {
   "name": "light",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "경제 뉴스 금융 용어 자동 하이라이트 Chrome 확장 프로그램",
   "type": "module",
   "scripts": {
-    "dev": "vite build --watch",
+    "dev": "vite build --watch --mode development",
     "build": "vite build",
     "lint": "eslint src",
     "format": "prettier --write src"
@@ -31,6 +31,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "web-vitals": "^6.2.2"
   }
 }
