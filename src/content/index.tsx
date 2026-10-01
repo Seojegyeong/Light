@@ -89,9 +89,9 @@ if (document.readyState === 'loading') {
 if (import.meta.env.DEV) {
   Promise.all([
     import('web-vitals').then(({ onLCP, onCLS, onINP }) => {
-      onLCP(metric => console.debug(`[Light] LCP: ${metric.value.toFixed(0)}ms`))
-      onCLS(metric => console.debug(`[Light] CLS: ${metric.value.toFixed(4)}`))
-      onINP(metric => console.debug(`[Light] INP: ${metric.value.toFixed(0)}ms`))
+      onLCP(metric => console.log(`[Light] LCP: ${metric.value.toFixed(0)}ms`))
+      onCLS(metric => console.log(`[Light] CLS: ${metric.value.toFixed(4)}`))
+      onINP(metric => console.log(`[Light] INP: ${metric.value.toFixed(0)}ms`))
     }),
   ])
 }
