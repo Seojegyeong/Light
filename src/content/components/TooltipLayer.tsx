@@ -70,7 +70,7 @@ export function TooltipLayer(): React.ReactElement {
       document.removeEventListener('mouseout', handleMouseOut)
       clearTimer()
     }
-  }, [handleMouseOver, handleMouseOut, clearTimer])
+  }, [handleMouseOver, handleMouseOut])
 
   return (
     <>
