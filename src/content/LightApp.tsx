@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { Global, css } from '@emotion/react'
 import type { Term } from '@/types/term'
 import { SettingsContext, useSettings } from './context/SettingsContext'
@@ -52,13 +52,18 @@ export function LightApp({ detectedTerms: initialDetectedTerms }: Props): React.
           ...newAiDetected,
         ])
       })
-      .catch(() => {})
+      .catch((err) => { console.error('[Light] AI 분석 실패:', err) })
       .finally(() => setIsAiScanning(false))
   }
 
+  const contextValue = useMemo(
+    () => ({ settings, setSettings, apiKey, setApiKey, detectedTerms, storageError, rescanWithAI, isAiScanning }),
+    [settings, setSettings, apiKey, setApiKey, detectedTerms, storageError, rescanWithAI, isAiScanning]
+  )
+
   return (
     <ErrorBoundary>
-      <SettingsContext.Provider value={{ settings, setSettings, apiKey, setApiKey, detectedTerms, storageError, rescanWithAI, isAiScanning }}>
+      <SettingsContext.Provider value={contextValue}>
         <AppInner detectedTerms={detectedTerms} />
       </SettingsContext.Provider>
     </ErrorBoundary>
