@@ -7,6 +7,7 @@ import { LightApp } from './LightApp'
 import { DEFAULT_SETTINGS } from '@/types/settings'
 import { extractTermsWithAI } from '@/services/aiExtractService'
 import type { Term } from '@/types/term'
+import { onLCP, onCLS, onINP } from 'web-vitals'
 
 function injectHighlightStyles(): void {
   if (document.getElementById('light-styles')) return
@@ -86,12 +87,8 @@ if (document.readyState === 'loading') {
   void mount()
 }
 
-if (import.meta.env.DEV) {
-  Promise.all([
-    import('web-vitals').then(({ onLCP, onCLS, onINP }) => {
-      onLCP(metric => console.log(`[Light] LCP: ${metric.value.toFixed(0)}ms`))
-      onCLS(metric => console.log(`[Light] CLS: ${metric.value.toFixed(4)}`))
-      onINP(metric => console.log(`[Light] INP: ${metric.value.toFixed(0)}ms`))
-    }),
-  ])
+if (import.meta.env.MODE === 'development') {
+  onLCP(metric => console.log(`[Light] LCP: ${metric.value.toFixed(0)}ms`))
+  onCLS(metric => console.log(`[Light] CLS: ${metric.value.toFixed(4)}`))
+  onINP(metric => console.log(`[Light] INP: ${metric.value.toFixed(0)}ms`))
 }
